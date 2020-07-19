@@ -1,0 +1,74 @@
+{
+  "name": "react-native-url-preview",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/flyerhq/react-native-url-preview#readme",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": "Oleksandr Demchenko <alexdemchenko@yahoo.com>",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "compile": "rm -rf lib && tsc -p .",
+    "lint": "eslint .",
+    "prepare": "yarn compile",
+    "test": "jest",
+    "type-coverage": "type-coverage --is 100 --strict --ignore-catch --cache"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/runtime": "^7.10.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/jest": "^26.0.7",
+    "@types/react-native": "^0.63.2",
+    "@types/react-test-renderer": "^16.9.2",
+    "babel-jest": "^26.1.0",
+    "eslint": "^7.5.0",
+    "eslint-plugin-jest": "^23.18.2",
+    "eslint-plugin-simple-import-sort": "^5.0.3",
+    "jest": "^26.1.0",
+    "metro-react-native-babel-preset": "^0.61.0",
+    "react": "^16.13.1",
+    "react-native": "^0.63.2",
+    "react-native-testing-library": "^2.1.1",
+    "react-test-renderer": "^16.13.1",
+    "type-coverage": "^2.9.0",
+    "typescript": "^3.9.7"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!**/styles.{ts,tsx}"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "preset": "react-native"
+  },
+  "typeCoverage": {
+    "is": 100
+  }
+}
