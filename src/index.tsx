@@ -1,174 +1,142 @@
 import { getLinkPreview } from 'link-preview-js'
-import React, { useCallback, useEffect, useState } from 'react'
+import * as React from 'react'
 import {
   ActivityIndicator,
   Image,
   Linking,
+  StyleProp,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from 'react-native'
 import styles from './styles'
 import { UrlData } from './types'
 
-const REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g
+const URL_REGEX = /^((https?|ftp):)?\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|\/|\?)*)?$/i
 
-type RenderComponent = (value?: string) => React.ReactElement
 interface Props {
-  url: string
+  containerStyle?: StyleProp<ViewStyle>
   onError?: (error: Error) => void
   onLoadEnd?: (urlData: UrlData) => void
-  renderLoader?: RenderComponent
-  renderSiteName?: RenderComponent
-  renderTitle?: RenderComponent
-  renderDescription?: RenderComponent
-  renderImage?: RenderComponent
-  siteNameNumberOfLines?: number
-  titleNumberOfLines?: number
-  descriptionNumberOfLines?: number
-  getLinkProps?: {
-    headers?: Record<string, string>
-    imagesPropertyType?: string
-  }
-  showSiteName?: boolean
-  showTitle?: boolean
-  showDescription?: boolean
-  containerStyle?: Record<string, unknown>
+  renderDescription?: (description?: string) => React.ReactNode
+  renderImage?: (imageUrl?: string) => React.ReactNode
+  renderLoader?: () => React.ReactNode
+  renderSiteName?: (name?: string) => React.ReactNode
+  renderTitle?: (title?: string) => React.ReactNode
+  url: string
 }
 
-const ReactUrlPreview = ({
-  url,
+const UrlPreview = ({
+  containerStyle,
   onError,
   onLoadEnd,
-  renderLoader,
-  siteNameNumberOfLines = 1,
-  titleNumberOfLines = 2,
-  descriptionNumberOfLines = 3,
-  showSiteName = true,
-  showTitle = true,
-  showDescription = true,
+  renderDescription,
   renderImage,
+  renderLoader,
   renderSiteName,
   renderTitle,
-  renderDescription,
-  containerStyle,
+  url,
 }: Props) => {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [urlData, setUrlData] = useState<UrlData>()
-  const [error, setError] = useState()
+  const [isLoaded, setIsLoaded] = React.useState(false)
+  const [urlData, setUrlData] = React.useState<UrlData | undefined>()
+  const [error, setError] = React.useState<Error | undefined>()
 
-  const getUrl = useCallback(
+  const getPreview = React.useCallback(
     async (urlString: string) => {
       try {
-        const linkPreviewData = await getLinkPreview(urlString)
-        setUrlData(linkPreviewData as UrlData)
+        const preview = await getLinkPreview(urlString)
+        onLoadEnd?.(preview)
+        setError(undefined)
         setIsLoaded(true)
-        onLoadEnd?.(linkPreviewData as UrlData)
+        setUrlData(preview)
       } catch (err) {
-        const errorMessage = err.toString()
+        onError?.(err)
+        setError(err)
         setIsLoaded(false)
-        setError(errorMessage)
-        onError?.(errorMessage)
+        setUrlData(undefined)
       }
     },
     [onError, onLoadEnd]
   )
 
-  useEffect(() => {
-    if (url) getUrl(url)
-  }, [getUrl, url])
+  React.useEffect(() => {
+    if (url) getPreview(url)
+  }, [getPreview, url])
 
-  const onPress = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const link = url.match(REGEX)[0]
-    Linking.canOpenURL(link).then((value) => {
-      if (value) Linking.openURL(link)
-    })
+  const handlePress = async () => {
+    const link = url.match(URL_REGEX)?.[0]
+
+    if (link) {
+      const canOpen = await Linking.canOpenURL(link)
+      if (canOpen) Linking.openURL(link)
+    }
   }
 
-  const renderImageContainer = () => {
-    const image = urlData?.images?.[0] ?? urlData?.favicons?.[0]
+  const renderDescriptionNode = () => {
+    if (renderDescription) return renderDescription(urlData?.description)
+    return urlData?.description ? (
+      <Text style={styles.descriptionText}>{urlData?.description}</Text>
+    ) : null
+  }
+
+  const renderImageNode = () => {
+    const image = urlData?.images?.[0]
     if (renderImage) return renderImage(image)
     if (image)
       return (
         <Image
-          style={styles.imageStyle}
+          resizeMode='contain'
           source={{ uri: image }}
-          resizeMode='cover'
+          style={styles.imageContainer}
         />
       )
 
     return (
-      <View style={styles.noImageStyle}>
-        <Text style={styles.noImageTextStyle} numberOfLines={2}>
-          {urlData?.title ?? ''}
-        </Text>
+      <View style={styles.noImageContainer}>
+        <Text style={styles.descriptionText}>{urlData?.title ?? ''}</Text>
       </View>
     )
   }
 
-  const renderSiteNameContainer = () => {
-    if (renderSiteName) return renderSiteName(urlData?.siteName)
-    return showSiteName && urlData?.siteName ? (
-      <Text
-        numberOfLines={siteNameNumberOfLines}
-        style={[styles.titleStyle, styles.siteTitle]}
-      >
-        {urlData?.siteName}
-      </Text>
-    ) : null
-  }
-
-  const renderTitleContainer = () => {
-    if (renderTitle) return renderTitle(urlData?.title)
-    return showTitle && urlData?.title ? (
-      <Text numberOfLines={titleNumberOfLines} style={styles.titleStyle}>
-        {urlData?.title}
-      </Text>
-    ) : null
-  }
-
-  const renderDescriptionContainer = () => {
-    if (renderDescription) return renderDescription(urlData?.description)
-    return showDescription && urlData?.description ? (
-      <Text
-        numberOfLines={descriptionNumberOfLines}
-        style={styles.descriptionStyle}
-      >
-        {urlData?.description}
-      </Text>
-    ) : null
-  }
-
-  const renderHeader = () => (
-    <View>
-      {renderSiteNameContainer()}
-      {renderTitleContainer()}
-      {renderDescriptionContainer()}
-    </View>
-  )
-
-  const renderLoaderElement = () =>
+  const renderLoaderNode = () =>
     renderLoader?.() ?? <ActivityIndicator size='large' />
 
-  const renderLinkPreview = () => {
-    return error ? (
-      <TouchableOpacity style={styles.containerStyle} activeOpacity={0.85}>
-        <Text style={styles.errorText}>{error}</Text>
-      </TouchableOpacity>
-    ) : (
-      <TouchableOpacity
-        style={[styles.containerStyle, containerStyle]}
-        activeOpacity={0.85}
-        onPress={onPress}
-      >
-        {renderImageContainer()}
-        {renderHeader()}
-      </TouchableOpacity>
+  const renderSiteNameNode = () => {
+    if (renderSiteName) return renderSiteName(urlData?.siteName)
+    return urlData?.siteName ? (
+      <Text style={styles.titleTextBold}>{urlData?.siteName}</Text>
+    ) : null
+  }
+
+  const renderTitleNode = () => {
+    if (renderTitle) return renderTitle(urlData?.title)
+    return urlData?.title ? (
+      <Text style={styles.titleText}>{urlData?.title}</Text>
+    ) : null
+  }
+
+  const renderUrlPreview = () => {
+    return (
+      <View style={StyleSheet.flatten([styles.container, containerStyle])}>
+        {error ? (
+          <TouchableOpacity>
+            <Text style={styles.descriptionText}>{error.message}</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handlePress}>
+            {renderImageNode()}
+            {renderSiteNameNode()}
+            {renderTitleNode()}
+            {renderDescriptionNode()}
+          </TouchableOpacity>
+        )}
+      </View>
     )
   }
-  return isLoaded || error ? renderLinkPreview() : renderLoaderElement()
+
+  return isLoaded || error ? renderUrlPreview() : <>{renderLoaderNode()}</>
 }
 
-export default ReactUrlPreview
+export default UrlPreview
