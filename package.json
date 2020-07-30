@@ -5,7 +5,7 @@
   "homepage": "https://github.com/flyerhq/react-native-url-preview#readme",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "Oleksandr Demchenko <alexdemchenko@yahoo.com>",
+  "author": "Vitalii Danylov <sincler2013@gmail.com>",
   "license": "MIT",
   "files": [
     "lib"
@@ -70,5 +70,8 @@
   },
   "typeCoverage": {
     "is": 100
+  },
+  "dependencies": {
+    "link-preview-js": "^2.0.4"
   }
 }
