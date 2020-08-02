@@ -20,6 +20,9 @@
     "test": "jest",
     "type-coverage": "type-coverage --is 100 --strict --ignore-catch --cache"
   },
+  "dependencies": {
+    "link-preview-js": "^2.0.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/runtime": "^7.10.5",
@@ -48,7 +51,8 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
-      "!**/styles.{ts,tsx}"
+      "!**/styles.{ts,tsx}",
+      "!**/types.{ts,tsx}"
     ],
     "coverageThreshold": {
       "global": {
@@ -70,8 +74,5 @@
   },
   "typeCoverage": {
     "is": 100
-  },
-  "dependencies": {
-    "link-preview-js": "^2.0.4"
   }
 }

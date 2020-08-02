@@ -1,3 +1,6 @@
-test('todo', () => {
-  it.todo('todo...todo..todo.todo.to..doooo')
+describe('url preview', () => {
+  it('renders', () => {
+    expect.assertions(0)
+    it.todo('Write tests')
+  })
 })

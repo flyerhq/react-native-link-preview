@@ -1,17 +1,21 @@
-import * as React from 'react'
-import { SafeAreaView, ScrollView } from 'react-native'
-import ReactUrlPreview from 'react-native-url-preview'
-import styles from './styles'
+import React from 'react'
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import UrlPreview from 'react-native-url-preview'
 
 const App = () => (
-  <SafeAreaView style={styles.safeArea}>
-    <ScrollView contentContainerStyle={styles.content}>
-      <ReactUrlPreview url={'https://www.github.com/'} />
-      <ReactUrlPreview url={'https://www.netflix.com/'} />
-      <ReactUrlPreview url={'https://www.facebook.com/'} />
-      <ReactUrlPreview url={'https://www.linkedin.com/feed/'} />
+  <SafeAreaView style={styles.container}>
+    <ScrollView>
+      <UrlPreview url='https://github.com/flyerhq' />
+      <UrlPreview url='https://medium.com/@alexdemchenko/making-a-right-keyboard-accessory-view-in-react-native-8943682fc6a9' />
+      <UrlPreview url='https://dev.to/demchenkoalex/making-a-right-keyboard-accessory-view-in-react-native-4n3p' />
     </ScrollView>
   </SafeAreaView>
 )
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+})
 
 export default App

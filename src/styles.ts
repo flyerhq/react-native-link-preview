@@ -2,60 +2,36 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 200,
-  },
-  containerStyle: {
-    padding: 16,
-    marginHorizontal: 16,
+    backgroundColor: '#88888812',
+    borderRadius: 8,
     marginBottom: 16,
-    borderRadius: 8,
-    backgroundColor: 'rgba(239, 239, 244, 0.52)',
+    marginHorizontal: 16,
+    padding: 16,
   },
-  imageStyle: {
+  descriptionText: {
+    color: '#888',
+    fontSize: 14,
+  },
+  imageContainer: {
     borderRadius: 8,
-    width: '100%',
-    height: 240,
+    height: 184,
     marginBottom: 8,
   },
-  noImageStyle: {
+  noImageContainer: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
     borderRadius: 8,
-    width: '100%',
-    height: 240,
-    alignContent: 'center',
+    height: 184,
     justifyContent: 'center',
-    backgroundColor: 'white',
     marginBottom: 8,
   },
-  noImageTextStyle: {
-    textAlign: 'center',
-    color: '#5d6383',
-  },
-  siteTitle: {
-    fontFamily: 'Helvetica-Bold',
-  },
-  titleStyle: {
+  titleText: {
     fontSize: 16,
-    color: '#000',
-    marginRight: 10,
-    marginBottom: 5,
-    alignSelf: 'flex-start',
-    fontFamily: 'Helvetica',
+    marginBottom: 4,
   },
-  descriptionStyle: {
-    fontSize: 14,
-    color: '#81848A',
-    marginRight: 10,
-    alignSelf: 'flex-start',
-    fontFamily: 'Helvetica',
-  },
-  errorText: {
-    fontSize: 14,
-    color: '#81848A',
-    marginRight: 10,
-    alignSelf: 'flex-start',
-    fontFamily: 'Helvetica',
+  titleTextBold: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
   },
 })
