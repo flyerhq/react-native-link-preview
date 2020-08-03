@@ -5,7 +5,7 @@
   "homepage": "https://github.com/flyerhq/react-native-url-preview#readme",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "Oleksandr Demchenko <alexdemchenko@yahoo.com>",
+  "author": "Vitalii Danylov <sincler2013@gmail.com>",
   "license": "MIT",
   "files": [
     "lib"
@@ -19,6 +19,9 @@
     "prepare": "yarn compile",
     "test": "jest",
     "type-coverage": "type-coverage --is 100 --strict --ignore-catch --cache"
+  },
+  "dependencies": {
+    "link-preview-js": "^2.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -48,7 +51,8 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
-      "!**/styles.{ts,tsx}"
+      "!**/styles.{ts,tsx}",
+      "!**/types.{ts,tsx}"
     ],
     "coverageThreshold": {
       "global": {
