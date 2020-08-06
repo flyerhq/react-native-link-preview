@@ -3,10 +3,12 @@ import * as React from 'react'
 import {
   ActivityIndicator,
   Image,
+  ImageProps,
   Linking,
   StyleProp,
   StyleSheet,
   Text,
+  TextProps,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -18,6 +20,9 @@ const URL_REGEX = /^((https?|ftp):)?\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF9
 
 interface Props {
   containerStyle?: StyleProp<ViewStyle>
+  descriptionProps?: TextProps
+  imageProps?: ImageProps
+  noImageContainerStyle?: StyleProp<ViewStyle>
   onError?: (error: Error) => void
   onLoadEnd?: (urlData: UrlData) => void
   renderDescription?: (description?: string) => React.ReactNode
@@ -25,11 +30,20 @@ interface Props {
   renderLoader?: () => React.ReactNode
   renderSiteName?: (name?: string) => React.ReactNode
   renderTitle?: (title?: string) => React.ReactNode
+  siteNameProps?: TextProps
+  titleProps?: TextProps
   url: string
+  urlOptions?: {
+    headers?: Record<string, string>
+    imagesPropertyType?: string
+  }
 }
 
 const UrlPreview = ({
   containerStyle,
+  descriptionProps,
+  imageProps,
+  noImageContainerStyle,
   onError,
   onLoadEnd,
   renderDescription,
@@ -37,7 +51,10 @@ const UrlPreview = ({
   renderLoader,
   renderSiteName,
   renderTitle,
+  siteNameProps,
+  titleProps,
   url,
+  urlOptions,
 }: Props) => {
   const [isLoaded, setIsLoaded] = React.useState(false)
   const [urlData, setUrlData] = React.useState<UrlData | undefined>()
@@ -46,7 +63,7 @@ const UrlPreview = ({
   const getPreview = React.useCallback(
     async (urlString: string) => {
       try {
-        const preview = await getLinkPreview(urlString)
+        const preview = await getLinkPreview(urlString, urlOptions)
         onLoadEnd?.(preview)
         setError(undefined)
         setIsLoaded(true)
@@ -58,7 +75,7 @@ const UrlPreview = ({
         setUrlData(undefined)
       }
     },
-    [onError, onLoadEnd]
+    [onError, onLoadEnd, urlOptions]
   )
 
   React.useEffect(() => {
@@ -77,7 +94,9 @@ const UrlPreview = ({
   const renderDescriptionNode = () => {
     if (renderDescription) return renderDescription(urlData?.description)
     return urlData?.description ? (
-      <Text style={styles.descriptionText}>{urlData?.description}</Text>
+      <Text style={styles.descriptionText} {...descriptionProps}>
+        {urlData?.description}
+      </Text>
     ) : null
   }
 
@@ -90,12 +109,20 @@ const UrlPreview = ({
           resizeMode='contain'
           source={{ uri: image }}
           style={styles.imageContainer}
+          {...imageProps}
         />
       )
 
     return (
-      <View style={styles.noImageContainer}>
-        <Text style={styles.descriptionText}>{urlData?.title ?? ''}</Text>
+      <View
+        style={StyleSheet.flatten([
+          styles.noImageContainer,
+          noImageContainerStyle,
+        ])}
+      >
+        <Text style={styles.descriptionText} {...descriptionProps}>
+          {urlData?.title ?? ''}
+        </Text>
       </View>
     )
   }
@@ -106,14 +133,18 @@ const UrlPreview = ({
   const renderSiteNameNode = () => {
     if (renderSiteName) return renderSiteName(urlData?.siteName)
     return urlData?.siteName ? (
-      <Text style={styles.titleTextBold}>{urlData?.siteName}</Text>
+      <Text style={styles.titleTextBold} {...siteNameProps}>
+        {urlData?.siteName}
+      </Text>
     ) : null
   }
 
   const renderTitleNode = () => {
     if (renderTitle) return renderTitle(urlData?.title)
     return urlData?.title ? (
-      <Text style={styles.titleText}>{urlData?.title}</Text>
+      <Text style={styles.titleText} {...titleProps}>
+        {urlData?.title}
+      </Text>
     ) : null
   }
 
