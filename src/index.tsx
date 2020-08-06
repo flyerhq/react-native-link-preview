@@ -21,9 +21,9 @@ const URL_REGEX = /^((https?|ftp):)?\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF9
 
 interface Props {
   containerStyle?: StyleProp<ViewStyle>
-  descriptionProps?: StyleProp<TextProps>
-  imageProps?: StyleProp<ImageProps>
-  noImageContainer?: StyleProp<ViewProps>
+  descriptionProps?: TextProps
+  imageProps?: ImageProps
+  noImageContainerStyle?: StyleProp<ViewStyle>
   onError?: (error: Error) => void
   onLoadEnd?: (urlData: UrlData) => void
   renderDescription?: (description?: string) => React.ReactNode
@@ -31,8 +31,8 @@ interface Props {
   renderLoader?: () => React.ReactNode
   renderSiteName?: (name?: string) => React.ReactNode
   renderTitle?: (title?: string) => React.ReactNode
-  siteNameProps?: StyleProp<TextProps>
-  titleProps?: StyleProp<TextProps>
+  siteNameProps?: TextProps
+  titleProps?: TextProps
   url: string
   urlOptions?: {
     headers?: Record<string, string>
@@ -44,7 +44,7 @@ const UrlPreview = ({
   containerStyle,
   descriptionProps,
   imageProps,
-  noImageContainer,
+  noImageContainerStyle,
   onError,
   onLoadEnd,
   renderDescription,
@@ -76,7 +76,7 @@ const UrlPreview = ({
         setUrlData(undefined)
       }
     },
-    [onError, onLoadEnd]
+    [onError, onLoadEnd, urlOptions]
   )
 
   React.useEffect(() => {
@@ -116,7 +116,10 @@ const UrlPreview = ({
 
     return (
       <View
-        style={StyleSheet.flatten([styles.noImageContainer, noImageContainer])}
+        style={StyleSheet.flatten([
+          styles.noImageContainer,
+          noImageContainerStyle,
+        ])}
       >
         <Text style={styles.descriptionText} {...descriptionProps}>
           {urlData?.title ?? ''}
