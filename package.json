@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "homepage": "https://github.com/flyerhq/react-native-url-preview#readme",
-  "main": "lib/index.js",
+  "main": "src/index.tsx",
   "types": "lib/index.d.ts",
   "author": "Vitalii Danylov <sincler2013@gmail.com>",
   "license": "MIT",

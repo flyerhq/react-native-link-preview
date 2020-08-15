@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Image,
   ImageProps,
+  LayoutChangeEvent,
   Linking,
   StyleProp,
   StyleSheet,
@@ -13,10 +14,15 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import styles from './styles'
+import styles, { DEFAULT_HEIGHT, DEFAULT_WIDTH, sizeStyle } from './styles'
 import { UrlData } from './types'
 
 const URL_REGEX = /^((https?|ftp):)?\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!$&'()*+,;=]|:|@)|\/|\?)*)?$/i
+
+export interface Size {
+  height: number
+  width: number
+}
 
 interface Props {
   containerStyle?: StyleProp<ViewStyle>
@@ -43,21 +49,32 @@ const UrlPreview = ({
   containerStyle,
   descriptionProps,
   imageProps,
-  noImageContainerStyle,
   onError,
   onLoadEnd,
   renderDescription,
   renderImage,
   renderLoader,
-  renderSiteName,
   renderTitle,
-  siteNameProps,
   titleProps,
   url,
   urlOptions,
 }: Props) => {
   const [isLoaded, setIsLoaded] = React.useState(false)
+  const [size, setSize] = React.useState<Size>({
+    height: DEFAULT_HEIGHT,
+    width: DEFAULT_WIDTH,
+  })
+  const [containerSize, setContainerSize] = React.useState<Size>({
+    height: 0,
+    width: 0,
+  })
+  // TODO: DEFAULT_WIDTH should be passed parameter
+  const { imageStyle } = sizeStyle({
+    messageWidth: containerSize.width,
+    size,
+  })
   const [urlData, setUrlData] = React.useState<UrlData | undefined>()
+  const [imageSource, setImageSource] = React.useState<string | undefined>()
   const [error, setError] = React.useState<Error | undefined>()
 
   const getPreview = React.useCallback(
@@ -65,6 +82,7 @@ const UrlPreview = ({
       try {
         const preview = await getLinkPreview(urlString, urlOptions)
         onLoadEnd?.(preview)
+        setImage(preview)
         setError(undefined)
         setIsLoaded(true)
         setUrlData(preview)
@@ -82,6 +100,24 @@ const UrlPreview = ({
     if (url) getPreview(url)
   }, [getPreview, url])
 
+  React.useEffect(() => {
+    if (imageSource)
+      Image.getSize(
+        imageSource,
+        (width, height) => setSize({ height, width }),
+        () => setSize({ height: 0, width: 0 })
+      )
+  }, [imageSource])
+
+  const setImage = (data: UrlData) => {
+    const image =
+      data?.images?.[0] ??
+      data?.favicons.find((favicon) =>
+        /\.(gif|jpe?g|png|webp|bmp)$/i.test(favicon)
+      )
+    setImageSource(image)
+  }
+
   const handlePress = async () => {
     const link = url.match(URL_REGEX)?.[0]
 
@@ -91,58 +127,85 @@ const UrlPreview = ({
     }
   }
 
+  const renderHeaderNode = () => (
+    <View
+      style={StyleSheet.flatten([styles.container, styles.headerContainer])}
+    >
+      <Text style={styles.headerText}>{url}</Text>
+    </View>
+  )
+
+  const onBodyLayout = (e: LayoutChangeEvent) => {
+    const { height, width } = e.nativeEvent.layout
+    setContainerSize({ height, width })
+  }
+
+  const renderBodyNode = () =>
+    imageSource ? (
+      <View
+        style={StyleSheet.flatten([styles.bodyContainer])}
+        onLayout={onBodyLayout}
+      >
+        {renderImageNode()}
+      </View>
+    ) : null
+
+  const renderBottomNode = () =>
+    urlData?.title || urlData?.description ? (
+      <View
+        style={StyleSheet.flatten([styles.container, styles.bottomContainer])}
+      >
+        {renderTitleNode()}
+        {renderDescriptionNode()}
+      </View>
+    ) : null
+
   const renderDescriptionNode = () => {
     if (renderDescription) return renderDescription(urlData?.description)
     return urlData?.description ? (
-      <Text style={styles.descriptionText} {...descriptionProps}>
+      <Text style={styles.bodyText} {...descriptionProps}>
         {urlData?.description}
       </Text>
     ) : null
   }
 
   const renderImageNode = () => {
-    const image = urlData?.images?.[0]
-    if (renderImage) return renderImage(image)
-    if (image)
+    if (renderImage) return renderImage(imageSource)
+    if (imageSource)
       return (
         <Image
           resizeMode='contain'
-          source={{ uri: image }}
-          style={styles.imageContainer}
+          source={{ uri: imageSource }}
+          style={imageStyle}
           {...imageProps}
         />
       )
-
-    return (
-      <View
-        style={StyleSheet.flatten([
-          styles.noImageContainer,
-          noImageContainerStyle,
-        ])}
-      >
-        <Text style={styles.descriptionText} {...descriptionProps}>
-          {urlData?.title ?? ''}
-        </Text>
-      </View>
-    )
   }
 
   const renderLoaderNode = () =>
     renderLoader?.() ?? <ActivityIndicator size='large' />
 
-  const renderSiteNameNode = () => {
-    if (renderSiteName) return renderSiteName(urlData?.siteName)
-    return urlData?.siteName ? (
-      <Text style={styles.titleTextBold} {...siteNameProps}>
-        {urlData?.siteName}
-      </Text>
-    ) : null
-  }
+  // const renderSiteNameNode = () => {
+  //   if (renderSiteName) return renderSiteName(urlData?.siteName)
+  //   return urlData?.siteName ? (
+  //     <Text
+  //       style={StyleSheet.flatten([styles.titleText, styles.titleBottomMargin])}
+  //       numberOfLines={2}
+  //       {...siteNameProps}
+  //     >
+  //       {urlData?.siteName}
+  //     </Text>
+  //   ) : null
+  // }
 
   const renderTitleNode = () => {
     if (renderTitle) return renderTitle(urlData?.title)
     return urlData?.title ? (
-      <Text style={styles.titleText} {...titleProps}>
+      <Text
+        style={StyleSheet.flatten([styles.titleText, styles.titleBottomMargin])}
+        numberOfLines={2}
+        {...titleProps}
+      >
         {urlData?.title}
       </Text>
     ) : null
@@ -151,18 +214,11 @@ const UrlPreview = ({
   const renderUrlPreview = () => {
     return (
       <View style={StyleSheet.flatten([styles.container, containerStyle])}>
-        {error ? (
-          <TouchableOpacity>
-            <Text style={styles.descriptionText}>{error.message}</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={handlePress}>
-            {renderImageNode()}
-            {renderSiteNameNode()}
-            {renderTitleNode()}
-            {renderDescriptionNode()}
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity onPress={handlePress}>
+          {renderHeaderNode()}
+          {renderBodyNode()}
+          {renderBottomNode()}
+        </TouchableOpacity>
       </View>
     )
   }
