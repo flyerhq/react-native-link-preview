@@ -5,7 +5,6 @@ import {
   ImageProps,
   LayoutChangeEvent,
   Linking,
-  StyleProp,
   StyleSheet,
   Text,
   TextProps,
@@ -25,10 +24,10 @@ export interface Size {
 }
 
 interface Props {
-  containerStyle?: StyleProp<ViewStyle>
+  containerStyle?: ViewStyle
   descriptionProps?: TextProps
   imageProps?: ImageProps
-  noImageContainerStyle?: StyleProp<ViewStyle>
+  noImageContainerStyle?: ViewStyle
   onError?: (error: Error) => void
   onLoadEnd?: (urlData: UrlData) => void
   renderDescription?: (description?: string) => React.ReactNode
@@ -37,6 +36,7 @@ interface Props {
   renderSiteName?: (name?: string) => React.ReactNode
   renderTitle?: (title?: string) => React.ReactNode
   siteNameProps?: TextProps
+  titleContainer?: ViewStyle
   titleProps?: TextProps
   url: string
   urlOptions?: {
@@ -55,6 +55,7 @@ const UrlPreview = ({
   renderImage,
   renderLoader,
   renderTitle,
+  titleContainer,
   titleProps,
   url,
   urlOptions,
@@ -127,7 +128,11 @@ const UrlPreview = ({
 
   const renderHeaderNode = () => (
     <View
-      style={StyleSheet.flatten([styles.container, styles.headerContainer])}
+      style={StyleSheet.flatten([
+        styles.container,
+        styles.headerContainer,
+        titleContainer,
+      ])}
     >
       <ParsedText
         style={styles.headerText}
