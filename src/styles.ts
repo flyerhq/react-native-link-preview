@@ -22,10 +22,6 @@ export const sizeStyle = ({
   })
 
 export default StyleSheet.create({
-  container: {
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-  },
   headerContainer: {
     backgroundColor: colors.brand,
   },

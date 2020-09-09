@@ -25,6 +25,7 @@ export interface Size {
 
 interface Props {
   containerStyle?: ViewStyle
+  containerWidth?: number
   descriptionProps?: TextProps
   imageProps?: ImageProps
   noImageContainerStyle?: ViewStyle
@@ -32,7 +33,6 @@ interface Props {
   onLoadEnd?: (urlData: UrlData) => void
   renderDescription?: (description?: string) => React.ReactNode
   renderImage?: (imageUrl?: string) => React.ReactNode
-  renderLoader?: () => React.ReactNode
   renderSiteName?: (name?: string) => React.ReactNode
   renderTitle?: (title?: string) => React.ReactNode
   siteNameProps?: TextProps
@@ -53,12 +53,12 @@ const UrlPreview = ({
   onLoadEnd,
   renderDescription,
   renderImage,
-  renderLoader,
   renderTitle,
   titleContainer,
   titleProps,
   url,
   urlOptions,
+  containerWidth,
 }: Props) => {
   const [isLoaded, setIsLoaded] = React.useState(false)
   const [size, setSize] = React.useState<Size>({
@@ -69,9 +69,8 @@ const UrlPreview = ({
     height: 0,
     width: 0,
   })
-  // TODO: DEFAULT_WIDTH should be passed parameter
   const { imageStyle } = sizeStyle({
-    messageWidth: containerSize.width,
+    messageWidth: containerWidth ?? containerSize.width,
     size,
   })
   const [urlData, setUrlData] = React.useState<UrlData | undefined>()
@@ -112,7 +111,9 @@ const UrlPreview = ({
 
   const setImage = (data: UrlData) => {
     const image =
-      data?.images?.[0] ??
+      data?.images?.find((favicon) =>
+        /\.(gif|jpe?g|png|webp|bmp)$/i.test(favicon)
+      ) ??
       data?.favicons.find((favicon) =>
         /\.(gif|jpe?g|png|webp|bmp)$/i.test(favicon)
       )
@@ -152,7 +153,7 @@ const UrlPreview = ({
     imageSource ? (
       <View
         style={StyleSheet.flatten([styles.bodyContainer])}
-        onLayout={onBodyLayout}
+        onLayout={containerWidth ? undefined : onBodyLayout}
       >
         {renderImageNode()}
       </View>
@@ -182,15 +183,13 @@ const UrlPreview = ({
     if (imageSource)
       return (
         <Image
-          resizeMode='center'
+          resizeMode='contain'
           source={{ uri: imageSource }}
           style={imageStyle}
           {...imageProps}
         />
       )
   }
-
-  const renderLoaderNode = () => renderLoader?.() ?? null
 
   const renderTitleNode = () => {
     if (renderTitle) return renderTitle(urlData?.title)
@@ -208,7 +207,7 @@ const UrlPreview = ({
   const renderUrlPreview = () => {
     const link = url.match(URL_REGEX)?.[0]
     return (
-      <View style={StyleSheet.flatten([styles.container, containerStyle])}>
+      <View style={containerStyle}>
         <TouchableOpacity onPress={() => handlePress(link)}>
           {renderHeaderNode()}
           {renderBodyNode()}
@@ -218,7 +217,7 @@ const UrlPreview = ({
     )
   }
 
-  return isLoaded || error ? renderUrlPreview() : <>{renderLoaderNode()}</>
+  return isLoaded || error ? renderUrlPreview() : null
 }
 
-export default UrlPreview
+export default React.memo(UrlPreview)
