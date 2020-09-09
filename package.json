@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "homepage": "https://github.com/flyerhq/react-native-url-preview#readme",
-  "main": "src/index.tsx",
+  "main": "lib/index.tsx",
   "types": "lib/index.d.ts",
   "author": "Vitalii Danylov <sincler2013@gmail.com>",
   "license": "MIT",
@@ -21,7 +21,8 @@
     "type-coverage": "type-coverage --is 100 --strict --ignore-catch --cache"
   },
   "dependencies": {
-    "link-preview-js": "^2.0.4"
+    "link-preview-js": "^2.0.4",
+    "react-native-parsed-text": "^0.0.22"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -29,7 +30,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@testing-library/react-native": "^7.0.2",
     "@types/jest": "^26.0.14",
-    "@types/react-native": "^0.63.19",
+    "@types/react-native": "^0.63.20",
     "@types/react-test-renderer": "^16.9.3",
     "babel-jest": "^26.3.0",
     "eslint": "^7.9.0",

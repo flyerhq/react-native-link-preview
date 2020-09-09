@@ -21,20 +21,6 @@ export const sizeStyle = ({
     },
   })
 
-const defaultHeadTextSize = {
-  fontFamily: 'Avenir',
-  fontStyle: 'normal',
-  fontSize: 16,
-  lineHeight: 22,
-}
-
-const defaultBodyTextSize = {
-  fontFamily: 'Avenir',
-  fontStyle: 'normal',
-  fontSize: 14,
-  lineHeight: 19,
-}
-
 export default StyleSheet.create({
   container: {
     paddingVertical: 16,
@@ -50,12 +36,20 @@ export default StyleSheet.create({
   bottomContainer: {
     backgroundColor: colors.contentBackground,
   },
+  url: {
+    fontWeight: '500',
+    textDecorationLine: 'underline',
+  },
   headerText: {
-    ...defaultHeadTextSize,
+    fontFamily: 'Avenir',
+    fontSize: 16,
+    lineHeight: 22,
     color: '#FFFFFF',
   },
   titleText: {
-    ...defaultHeadTextSize,
+    fontFamily: 'Avenir',
+    fontSize: 16,
+    lineHeight: 22,
     color: colors.dark,
     fontWeight: '800',
   },
@@ -63,7 +57,9 @@ export default StyleSheet.create({
     marginBottom: 4,
   },
   bodyText: {
-    ...defaultBodyTextSize,
+    fontFamily: 'Avenir',
+    fontSize: 14,
+    lineHeight: 19,
     color: colors.dark,
   },
   imageBackground: {

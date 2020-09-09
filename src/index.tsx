@@ -1,7 +1,6 @@
 import { getLinkPreview } from 'link-preview-js'
 import * as React from 'react'
 import {
-  ActivityIndicator,
   Image,
   ImageProps,
   LayoutChangeEvent,
@@ -14,6 +13,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
+import ParsedText from 'react-native-parsed-text'
 import styles, { DEFAULT_HEIGHT, DEFAULT_WIDTH, sizeStyle } from './styles'
 import { UrlData } from './types'
 
@@ -118,9 +118,7 @@ const UrlPreview = ({
     setImageSource(image)
   }
 
-  const handlePress = async () => {
-    const link = url.match(URL_REGEX)?.[0]
-
+  const handlePress = async (link?: string) => {
     if (link) {
       const canOpen = await Linking.canOpenURL(link)
       if (canOpen) Linking.openURL(link)
@@ -131,7 +129,12 @@ const UrlPreview = ({
     <View
       style={StyleSheet.flatten([styles.container, styles.headerContainer])}
     >
-      <Text style={styles.headerText}>{url}</Text>
+      <ParsedText
+        style={styles.headerText}
+        parse={[{ type: 'url', style: styles.url, onPress: handlePress }]}
+      >
+        {url}
+      </ParsedText>
     </View>
   )
 
@@ -174,7 +177,7 @@ const UrlPreview = ({
     if (imageSource)
       return (
         <Image
-          resizeMode='contain'
+          resizeMode='center'
           source={{ uri: imageSource }}
           style={imageStyle}
           {...imageProps}
@@ -182,21 +185,7 @@ const UrlPreview = ({
       )
   }
 
-  const renderLoaderNode = () =>
-    renderLoader?.() ?? <ActivityIndicator size='large' />
-
-  // const renderSiteNameNode = () => {
-  //   if (renderSiteName) return renderSiteName(urlData?.siteName)
-  //   return urlData?.siteName ? (
-  //     <Text
-  //       style={StyleSheet.flatten([styles.titleText, styles.titleBottomMargin])}
-  //       numberOfLines={2}
-  //       {...siteNameProps}
-  //     >
-  //       {urlData?.siteName}
-  //     </Text>
-  //   ) : null
-  // }
+  const renderLoaderNode = () => renderLoader?.() ?? null
 
   const renderTitleNode = () => {
     if (renderTitle) return renderTitle(urlData?.title)
@@ -212,9 +201,10 @@ const UrlPreview = ({
   }
 
   const renderUrlPreview = () => {
+    const link = url.match(URL_REGEX)?.[0]
     return (
       <View style={StyleSheet.flatten([styles.container, containerStyle])}>
-        <TouchableOpacity onPress={handlePress}>
+        <TouchableOpacity onPress={() => handlePress(link)}>
           {renderHeaderNode()}
           {renderBodyNode()}
           {renderBottomNode()}
