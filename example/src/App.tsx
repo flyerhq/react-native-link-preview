@@ -1,6 +1,6 @@
+import UrlPreview from '@flyerhq/react-native-url-preview'
 import React from 'react'
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
-import UrlPreview from 'react-native-url-preview'
 
 const App = () => (
   <SafeAreaView style={styles.container}>
