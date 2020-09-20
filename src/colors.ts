@@ -1,4 +1,4 @@
-export default {
+export const colors = {
   brand: '#6F61E8',
   bodyBackground: '#ECECEF',
   contentBackground: '#F7F7F8',

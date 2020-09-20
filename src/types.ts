@@ -1,3 +1,11 @@
+export interface Video {
+  url: string
+  secureUrl: string
+  type: string
+  width: number
+  height: number
+}
+
 export interface UrlData {
   contentType?: string
   description?: string
@@ -7,11 +15,10 @@ export interface UrlData {
   siteName?: string
   title?: string
   url: string
-  videos?: {
-    url: string
-    secureUrl: string
-    type: string
-    width: number
-    height: number
-  }[]
+  videos?: Video[]
+}
+
+export interface Size {
+  height: number
+  width: number
 }

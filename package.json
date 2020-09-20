@@ -71,7 +71,10 @@
       "json",
       "node"
     ],
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "./jest/setup.ts"
+    ]
   },
   "typeCoverage": {
     "is": 100

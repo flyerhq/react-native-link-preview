@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native'
-import { Size } from '.'
-import colors from './colors'
-
-export const DEFAULT_HEIGHT = 170
-export const DEFAULT_WIDTH = 300
+import { colors } from './colors'
+import { Size } from './types'
 
 export const sizeStyle = ({
   messageWidth,
@@ -22,11 +19,13 @@ export const sizeStyle = ({
   })
 
 export default StyleSheet.create({
-  headerContainer: {
-    backgroundColor: colors.brand,
+  container: {
+    paddingVertical: 16,
+    paddingHorizontal: 24,
   },
   bodyContainer: {
     flex: 1,
+    alignItems: 'center',
     backgroundColor: colors.bodyBackground,
   },
   bottomContainer: {
@@ -35,6 +34,9 @@ export default StyleSheet.create({
   url: {
     fontWeight: '500',
     textDecorationLine: 'underline',
+  },
+  headerContainer: {
+    backgroundColor: colors.brand,
   },
   headerText: {
     fontFamily: 'Avenir',
@@ -57,6 +59,9 @@ export default StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
     color: colors.dark,
+  },
+  image: {
+    backgroundColor: colors.bodyBackground,
   },
   imageBackground: {
     flex: 1,
