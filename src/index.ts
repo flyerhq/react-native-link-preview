@@ -1,4 +1,2 @@
-export * from './UrlPreview'
+export * from './LinkPreview'
 export * from './utils'
-export * from './constants'
-export * from './colors'

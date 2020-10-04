@@ -1,21 +1,14 @@
-export interface Video {
-  url: string
-  secureUrl: string
-  type: string
-  width: number
-  height: number
+export interface PreviewData {
+  description?: string
+  image?: PreviewDataImage
+  link?: string
+  title?: string
 }
 
-export interface UrlData {
-  contentType?: string
-  description?: string
-  favicons: string[]
-  images?: string[]
-  mediaType: string
-  siteName?: string
-  title?: string
+export interface PreviewDataImage {
+  height: number
   url: string
-  videos?: Video[]
+  width: number
 }
 
 export interface Size {

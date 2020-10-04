@@ -9,7 +9,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@flyerhq/react-native-url-preview": ["../src"]
+      "@flyerhq/react-native-link-preview": ["../src"]
     },
     "skipLibCheck": true,
     "strict": true,

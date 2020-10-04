@@ -1,69 +1,31 @@
 import { StyleSheet } from 'react-native'
-import { colors } from './colors'
-import { Size } from './types'
-
-export const sizeStyle = ({
-  messageWidth,
-  size,
-}: {
-  messageWidth: number
-  size: Size
-}) =>
-  StyleSheet.create({
-    imageStyle: {
-      aspectRatio: size.height > 0 ? size.width / size.height : 1,
-      maxHeight: messageWidth,
-      minWidth: 170,
-      width: messageWidth,
-    },
-  })
 
 export default StyleSheet.create({
-  container: {
-    paddingVertical: 16,
-    paddingHorizontal: 24,
+  description: {
+    marginTop: 4,
   },
-  bodyContainer: {
-    flex: 1,
+  imageContainer: {
     alignItems: 'center',
-    backgroundColor: colors.bodyBackground,
+    backgroundColor: '#f7f7f8',
   },
-  bottomContainer: {
-    backgroundColor: colors.contentBackground,
+  metadataContainer: {
+    flexDirection: 'row',
+    marginTop: 16,
   },
-  url: {
-    fontWeight: '500',
-    textDecorationLine: 'underline',
-  },
-  headerContainer: {
-    backgroundColor: colors.brand,
-  },
-  headerText: {
-    fontFamily: 'Avenir',
-    fontSize: 16,
-    lineHeight: 22,
-    color: '#FFFFFF',
-  },
-  titleText: {
-    fontFamily: 'Avenir',
-    fontSize: 16,
-    lineHeight: 22,
-    color: colors.dark,
-    fontWeight: '800',
-  },
-  titleBottomMargin: {
-    marginBottom: 4,
-  },
-  bodyText: {
-    fontFamily: 'Avenir',
-    fontSize: 14,
-    lineHeight: 19,
-    color: colors.dark,
-  },
-  image: {
-    backgroundColor: colors.bodyBackground,
-  },
-  imageBackground: {
+  metadataTextContainer: {
     flex: 1,
+  },
+  minimizedImage: {
+    borderRadius: 12,
+    height: 48,
+    marginLeft: 4,
+    width: 48,
+  },
+  textContainer: {
+    marginHorizontal: 24,
+    marginVertical: 16,
+  },
+  title: {
+    fontWeight: 'bold',
   },
 })
