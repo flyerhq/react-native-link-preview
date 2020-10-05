@@ -82,112 +82,108 @@ export const LinkPreview = React.memo(
     const handlePress = () => data?.link && Linking.openURL(data.link)
 
     const renderDescriptionNode = (description: string) => {
-      if (renderDescription) return renderDescription(description)
-
       return (
-        <Text numberOfLines={3} style={styles.description}>
-          {description}
-        </Text>
+        renderDescription?.(description) ?? (
+          <Text numberOfLines={3} style={styles.description}>
+            {description}
+          </Text>
+        )
       )
     }
 
     const renderImageNode = (image: PreviewDataImage) => {
-      if (renderImage) return renderImage(image)
-
       return (
-        <View
-          style={StyleSheet.flatten([
-            styles.imageContainer,
-            imageContainerStyle,
-          ])}
-        >
-          <Image
-            source={{ uri: image.url }}
-            style={{
-              aspectRatio,
-              maxHeight: containerWidth,
-              width: containerWidth,
-            }}
-          />
-        </View>
+        renderImage?.(image) ?? (
+          <View
+            style={StyleSheet.flatten([
+              styles.imageContainer,
+              imageContainerStyle,
+            ])}
+          >
+            <Image
+              source={{ uri: image.url }}
+              style={{
+                aspectRatio,
+                maxHeight: containerWidth,
+                width: containerWidth,
+              }}
+            />
+          </View>
+        )
       )
     }
 
     const renderLinkPreviewNode = () => {
-      if (renderLinkPreview)
-        return renderLinkPreview({
+      return (
+        renderLinkPreview?.({
           aspectRatio,
           containerWidth,
           previewData: data,
-        })
-
-      return (
-        <>
-          <View
-            style={StyleSheet.flatten([
-              styles.textContainer,
-              textContainerStyle,
-            ])}
-          >
-            {renderTextNode()}
-            {/* Render metadata only if there are either description OR title OR
-              there is an image with an aspect ratio of 1 and either description or title
-            */}
-            {(data?.description ||
-              (data?.image &&
-                aspectRatio === 1 &&
-                (data?.description || data?.title)) ||
-              data?.title) && (
-              <View
-                style={StyleSheet.flatten([
-                  styles.metadataContainer,
-                  metadataContainerStyle,
-                ])}
-              >
+        }) ?? (
+          <>
+            <View
+              style={StyleSheet.flatten([
+                styles.textContainer,
+                textContainerStyle,
+              ])}
+            >
+              {renderTextNode()}
+              {/* Render metadata only if there are either description OR title OR
+                there is an image with an aspect ratio of 1 and either description or title
+              */}
+              {(data?.description ||
+                (data?.image &&
+                  aspectRatio === 1 &&
+                  (data?.description || data?.title)) ||
+                data?.title) && (
                 <View
                   style={StyleSheet.flatten([
-                    styles.metadataTextContainer,
-                    metadataTextContainerStyle,
+                    styles.metadataContainer,
+                    metadataContainerStyle,
                   ])}
                 >
-                  {data?.title && renderTitleNode(data.title)}
-                  {data?.description && renderDescriptionNode(data.description)}
+                  <View
+                    style={StyleSheet.flatten([
+                      styles.metadataTextContainer,
+                      metadataTextContainerStyle,
+                    ])}
+                  >
+                    {data?.title && renderTitleNode(data.title)}
+                    {data?.description &&
+                      renderDescriptionNode(data.description)}
+                  </View>
+                  {data?.image && renderMinimizedImageNode(data.image)}
                 </View>
-                {data?.image &&
-                  aspectRatio === 1 &&
-                  renderMinimizedImageNode(data.image)}
-              </View>
-            )}
-          </View>
-          {/* Render image node only if there is an image with an aspect ratio not equal to 1
-            OR there are no description and title
-          */}
-          {data?.image &&
-            (aspectRatio !== 1 || (!data?.description && !data.title)) &&
-            renderImageNode(data.image)}
-        </>
+              )}
+            </View>
+            {/* Render image node only if there is an image with an aspect ratio not equal to 1
+              OR there are no description and title
+            */}
+            {data?.image &&
+              (aspectRatio !== 1 || (!data?.description && !data.title)) &&
+              renderImageNode(data.image)}
+          </>
+        )
       )
     }
 
     const renderMinimizedImageNode = (image: PreviewDataImage) => {
-      if (renderMinimizedImage) return renderMinimizedImage(image)
-
-      return <Image source={{ uri: image.url }} style={styles.minimizedImage} />
+      return (
+        renderMinimizedImage?.(image) ?? (
+          <Image source={{ uri: image.url }} style={styles.minimizedImage} />
+        )
+      )
     }
 
-    const renderTextNode = () => {
-      if (renderText) return renderText(text)
-
-      return <Text>{text}</Text>
-    }
+    const renderTextNode = () => renderText?.(text) ?? <Text>{text}</Text>
 
     const renderTitleNode = (title: string) => {
-      if (renderTitle) return renderTitle(title)
-
       return (
-        <Text numberOfLines={2} style={styles.title}>
-          {title}
-        </Text>
+        renderTitle?.(title) ?? (
+          <Text numberOfLines={2} style={styles.title}>
+            {title}
+          </Text>
+        )
       )
     }
 
