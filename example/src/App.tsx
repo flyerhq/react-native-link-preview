@@ -7,19 +7,11 @@ const App = () => (
     <ScrollView contentContainerStyle={styles.container}>
       <LinkPreview
         containerStyle={styles.previewContainer}
-        text='https://9gag.com/'
-      />
-      <LinkPreview
-        containerStyle={styles.previewContainer}
-        text='https://mrowka-bagazowka.pl/'
-      />
-      <LinkPreview
-        containerStyle={styles.previewContainer}
-        text='Follow me on https://facebook.com/'
-      />
-      <LinkPreview
-        containerStyle={styles.previewContainer}
         text='https://github.com/flyerhq'
+      />
+      <LinkPreview
+        containerStyle={styles.previewContainer}
+        text='https://dev.to/demchenkoalex/making-a-right-keyboard-accessory-view-in-react-native-4n3p'
       />
       <LinkPreview
         containerStyle={styles.previewContainer}

@@ -36,7 +36,7 @@ export const getActualImageUrl = (baseUrl: string, imageUrl?: string) => {
   return actualImageUrl
 }
 
-export const getActualText = (text?: string) => {
+export const getHtmlEntitiesDecodedText = (text?: string) => {
   const actualText = text?.trim()
   if (!actualText) return
 
@@ -44,8 +44,12 @@ export const getActualText = (text?: string) => {
 }
 
 export const getContent = (left: string, right: string, type: string) => {
-  if (left.trim() === type) return right.trim()
-  if (right.trim() === type) return left.trim()
+  const contents = {
+    [left.trim()]: right,
+    [right.trim()]: left,
+  }
+
+  return contents[type]?.trim()
 }
 
 export const getImageSize = (url: string) => {
@@ -70,7 +74,7 @@ export const getPreviewData = async (text: string) => {
   }
 
   try {
-    const link = text.match(LINK_REGEX)?.[0]
+    const link = text.match(REGEX_LINK)?.[0]
 
     if (!link) return previewData
 
@@ -80,7 +84,7 @@ export const getPreviewData = async (text: string) => {
 
     const contentType = response.headers.get('content-type') ?? ''
 
-    if (new RegExp('image/*', 'g').exec(contentType)) {
+    if (REGEX_IMAGE_CONTENT_TYPE.test(contentType)) {
       const image = await getPreviewDataImage(link)
       previewData.image = image
       return previewData
@@ -94,18 +98,10 @@ export const getPreviewData = async (text: string) => {
     const head = html.substring(0, html.indexOf('<body'))
 
     // Get page title
-    const title = new RegExp('<title.*?>(.*?)</title>', 'g').exec(head)
-    previewData.title = getActualText(title?.[1])
+    const title = REGEX_TITLE.exec(head)
+    previewData.title = getHtmlEntitiesDecodedText(title?.[1])
 
-    const meta = [
-      ...head.matchAll(
-        new RegExp(
-          // Some pages write content before the name/property, some use single quotes instead of double
-          '<meta.*?(property|name|content)=["\'](.*?)["\'].*?(property|name|content)=["\'](.*?)["\'].*?>',
-          'g'
-        )
-      ),
-    ]
+    const meta = [...head.matchAll(REGEX_META)]
 
     const metaPreviewData = meta.reduce<{
       description?: string
@@ -115,24 +111,24 @@ export const getPreviewData = async (text: string) => {
       (acc, curr) => {
         // Verify that we have property/name and content
         // Note that if a page will specify property, name and content in the same meta, regex will fail
-        if (!curr[2] || !curr[4]) return acc
+        if (!curr[2] || !curr[3]) return acc
 
         // Only take the first occurrence
         // For description take the meta description tag into consideration
         const description =
           !acc.description &&
-          (getContent(curr[2], curr[4], 'og:description') ||
-            getContent(curr[2], curr[4], 'description'))
+          (getContent(curr[2], curr[3], 'og:description') ||
+            getContent(curr[2], curr[3], 'description'))
         const ogImage =
-          !acc.imageUrl && getContent(curr[2], curr[4], 'og:image')
-        const ogTitle = !acc.title && getContent(curr[2], curr[4], 'og:title')
+          !acc.imageUrl && getContent(curr[2], curr[3], 'og:image')
+        const ogTitle = !acc.title && getContent(curr[2], curr[3], 'og:title')
 
         return {
           description: description
-            ? getActualText(description)
+            ? getHtmlEntitiesDecodedText(description)
             : acc.description,
           imageUrl: ogImage ? getActualImageUrl(link, ogImage) : acc.imageUrl,
-          title: ogTitle ? getActualText(ogTitle) : acc.title,
+          title: ogTitle ? getHtmlEntitiesDecodedText(ogTitle) : acc.title,
         }
       },
       { title: previewData.title }
@@ -143,25 +139,11 @@ export const getPreviewData = async (text: string) => {
     previewData.title = metaPreviewData.title
 
     if (!previewData.image) {
-      const imageSrc = new RegExp(
-        '<link.*?rel=["\']image_src["\'].*?href=["\'](.*?)["\'].*?>',
-        'g'
-      ).exec(head)
-      previewData.image = await getPreviewDataImage(
-        getActualImageUrl(link, imageSrc?.[1])
-      )
-    }
-
-    if (!previewData.image) {
-      const imgTags = [
-        // Consider empty line after img tag and take only the src field, space before to not match data-src for example
-        // eslint-disable-next-line no-control-regex
-        ...html.matchAll(new RegExp('<img[\n\r]*.*? src=["\'](.*?)["\']', 'g')),
-      ]
+      const tags = [...html.matchAll(REGEX_IMAGE_TAG)]
 
       let images: PreviewDataImage[] = []
 
-      for (const tag of imgTags) {
+      for (const tag of tags) {
         const image = await getPreviewDataImage(getActualImageUrl(link, tag[1]))
 
         if (!image) continue
@@ -188,15 +170,16 @@ export const getPreviewDataImage = async (url?: string) => {
     const aspectRatio = height > 0 ? width / height : 1
 
     if (height > 100 && width > 100 && aspectRatio > 0.1 && aspectRatio < 10) {
-      return {
-        height,
-        url,
-        width,
-      }
+      const image: PreviewDataImage = { height, url, width }
+      return image
     }
-  } catch {
-    return
-  }
+  } catch {}
 }
 
-export const LINK_REGEX = /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\.(xn--)?[a-z0-9-]{2,20}\b([-a-zA-Z0-9@:%_+[\],.~#?&/=]*[-a-zA-Z0-9@:%_+\]~#?&/=])*/i
+export const REGEX_IMAGE_CONTENT_TYPE = /image\/*/g
+// Consider empty line after img tag and take only the src field, space before to not match data-src for example
+export const REGEX_IMAGE_TAG = /<img[\n\r]*.*? src=["'](.*?)["']/g
+export const REGEX_LINK = /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\.(xn--)?[a-z0-9-]{2,20}\b([-a-zA-Z0-9@:%_+[\],.~#?&/=]*[-a-zA-Z0-9@:%_+\]~#?&/=])*/i
+// Some pages write content before the name/property, some use single quotes instead of double
+export const REGEX_META = /<meta.*?(property|name)=["'](.*?)["'].*?content=["'](.*?)["'].*?>/g
+export const REGEX_TITLE = /<title.*?>(.*?)<\/title>/g

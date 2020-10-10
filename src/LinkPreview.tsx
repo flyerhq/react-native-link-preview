@@ -152,7 +152,9 @@ export const LinkPreview = React.memo(
                     {data?.description &&
                       renderDescriptionNode(data.description)}
                   </View>
-                  {data?.image && renderMinimizedImageNode(data.image)}
+                  {data?.image &&
+                    aspectRatio === 1 &&
+                    renderMinimizedImageNode(data.image)}
                 </View>
               )}
             </View>
