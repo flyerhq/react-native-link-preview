@@ -1,17 +1,17 @@
-export interface UrlData {
-  contentType?: string
+export interface PreviewData {
   description?: string
-  favicons: string[]
-  images?: string[]
-  mediaType: string
-  siteName?: string
+  image?: PreviewDataImage
+  link?: string
   title?: string
+}
+
+export interface PreviewDataImage {
+  height: number
   url: string
-  videos?: {
-    url: string
-    secureUrl: string
-    type: string
-    width: number
-    height: number
-  }[]
+  width: number
+}
+
+export interface Size {
+  height: number
+  width: number
 }
