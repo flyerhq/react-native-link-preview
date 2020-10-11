@@ -1,6 +1,6 @@
 {
   "name": "@flyerhq/react-native-link-preview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "homepage": "https://github.com/flyerhq/react-native-link-preview#readme",
   "main": "lib/index.js",
