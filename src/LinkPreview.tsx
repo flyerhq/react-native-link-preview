@@ -58,7 +58,7 @@ export const LinkPreview = React.memo(
     const [containerWidth, setContainerWidth] = React.useState(0)
     const [data, setData] = React.useState(previewData)
     const aspectRatio = data?.image
-      ? data.image.width / (data.image.height || 1)
+      ? data.image.width / data.image.height
       : undefined
 
     React.useEffect(() => {
@@ -101,6 +101,7 @@ export const LinkPreview = React.memo(
             ])}
           >
             <Image
+              accessibilityRole='image'
               source={{ uri: image.url }}
               style={{
                 aspectRatio,
@@ -172,7 +173,11 @@ export const LinkPreview = React.memo(
     const renderMinimizedImageNode = (image: PreviewDataImage) => {
       return (
         renderMinimizedImage?.(image) ?? (
-          <Image source={{ uri: image.url }} style={styles.minimizedImage} />
+          <Image
+            accessibilityRole='image'
+            source={{ uri: image.url }}
+            style={styles.minimizedImage}
+          />
         )
       )
     }
@@ -191,6 +196,7 @@ export const LinkPreview = React.memo(
 
     return (
       <TouchableWithoutFeedback
+        accessibilityRole='button'
         onPress={handlePress}
         {...touchableWithoutFeedbackProps}
       >

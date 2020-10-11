@@ -19,20 +19,6 @@ export const getActualImageUrl = (baseUrl: string, imageUrl?: string) => {
     }
   }
 
-  if (
-    ![
-      '.png',
-      '.jpg',
-      '.jpeg',
-      '.bmp',
-      '.gif',
-      '.webp',
-      '.psd',
-      '.ico',
-    ].some((s) => actualImageUrl?.endsWith(s))
-  )
-    actualImageUrl = `${actualImageUrl}.png`
-
   return actualImageUrl
 }
 
@@ -65,6 +51,8 @@ export const getImageSize = (url: string) => {
   })
 }
 
+// Functions below use functions from the same file and mocks are not working
+/* istanbul ignore next */
 export const getPreviewData = async (text: string) => {
   const previewData: PreviewData = {
     description: undefined,
@@ -162,12 +150,13 @@ export const getPreviewData = async (text: string) => {
   }
 }
 
+/* istanbul ignore next */
 export const getPreviewDataImage = async (url?: string) => {
   if (!url) return
 
   try {
     const { height, width } = await getImageSize(url)
-    const aspectRatio = height > 0 ? width / height : 1
+    const aspectRatio = width / (height || 1)
 
     if (height > 100 && width > 100 && aspectRatio > 0.1 && aspectRatio < 10) {
       const image: PreviewDataImage = { height, url, width }
