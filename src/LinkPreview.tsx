@@ -17,7 +17,6 @@ import { getPreviewData, oneOf } from './utils'
 
 export interface LinkPreviewProps {
   containerStyle?: StyleProp<ViewStyle>
-  imageContainerStyle?: StyleProp<ViewStyle>
   metadataContainerStyle?: StyleProp<ViewStyle>
   metadataTextContainerStyle?: StyleProp<ViewStyle>
   onPreviewDataFetched?: (previewData: PreviewData) => void
@@ -40,7 +39,6 @@ export interface LinkPreviewProps {
 export const LinkPreview = React.memo(
   ({
     containerStyle,
-    imageContainerStyle,
     metadataContainerStyle,
     metadataTextContainerStyle,
     onPreviewDataFetched,
@@ -62,15 +60,16 @@ export const LinkPreview = React.memo(
       : undefined
 
     React.useEffect(() => {
-      if (data) return
+      if (previewData) return
       const fetchData = async () => {
+        setData(undefined)
         const newData = await getPreviewData(text)
         setData(newData)
         onPreviewDataFetched?.(newData)
       }
 
       fetchData()
-    }, [data, onPreviewDataFetched, text])
+    }, [onPreviewDataFetched, previewData, text])
 
     const handleContainerLayout = React.useCallback(
       (event: LayoutChangeEvent) => {
@@ -93,22 +92,18 @@ export const LinkPreview = React.memo(
     const renderImageNode = (image: PreviewDataImage) => {
       return oneOf(
         renderImage,
-        <View
+        <Image
+          accessibilityRole='image'
+          source={{ uri: image.url }}
           style={StyleSheet.flatten([
-            styles.imageContainer,
-            imageContainerStyle,
-          ])}
-        >
-          <Image
-            accessibilityRole='image'
-            source={{ uri: image.url }}
-            style={{
+            styles.image,
+            {
               aspectRatio,
               maxHeight: containerWidth,
               width: containerWidth,
-            }}
-          />
-        </View>
+            },
+          ])}
+        />
       )(image)
     }
 

@@ -4,8 +4,8 @@ export default StyleSheet.create({
   description: {
     marginTop: 4,
   },
-  imageContainer: {
-    alignItems: 'center',
+  image: {
+    alignSelf: 'center',
     backgroundColor: '#f7f7f8',
   },
   metadataContainer: {

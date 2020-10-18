@@ -1,72 +1,55 @@
-# react-native-url-preview
+# React Native Link Preview
 
-![Supports Android and iOS](https://img.shields.io/badge/platforms-android%20|%20ios-lightgrey.svg)
+[![npm](https://img.shields.io/npm/v/@flyerhq/react-native-link-preview)](https://www.npmjs.com/package/@flyerhq/react-native-link-preview)
+[![build](https://github.com/flyerhq/react-native-link-preview/workflows/build/badge.svg)](https://github.com/flyerhq/react-native-link-preview/actions?query=workflow%3Abuild)
+[![Maintainability](https://api.codeclimate.com/v1/badges/642bed5d3abacc8b750e/maintainability)](https://codeclimate.com/github/flyerhq/react-native-link-preview/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/642bed5d3abacc8b750e/test_coverage)](https://codeclimate.com/github/flyerhq/react-native-link-preview/test_coverage)
+[![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&suffix=%&query=$.typeCoverage.is&uri=https%3A%2F%2Fraw.githubusercontent.com%2Fflyerhq%2Freact-native-link-preview%2Fmain%2Fpackage.json)](https://github.com/plantain-00/type-coverage)
 
-**react-native-url-preview** is a package that gives you pretty out of the box and fully customizable representation of provided URL.
+Fully customizable preview of the link extracted from the provided text.
 
-## Key Features!
-
-- Easy to style
-- Cover both platforms IOS/Android
-- Hooks only
-- Tests coverage
-- No native dependencies
-
-### **Tech**
-
-**react-native-url-preview** uses an open-source project to work properly:
-
-- [link-preview-js](https://www.npmjs.com/package/link-preview-js) - Typescript library that allows you to extract information from a URL or parse text and retrieve information from the first available link.
-
-### **Installation**
+## Getting Started
 
 ```sh
-$ yarn add flyerhq/@react-native-url-preview
-or
-$ npm install flyerhq/@react-native-url-preview
+yarn add @flyerhq/react-native-link-preview
 ```
 
-### **Example import**
+## Usage
 
-```javascript
-import UrlPreview from 'react-native-url-preview'
-
-<UrlPreview url='https://github.com/flyerhq' />
+```ts
+import { LinkPreview } from '@flyerhq/react-native-link-preview'
+// ...
+return (
+  <LinkPreview text='This link https://github.com/flyerhq can be extracted from the text' />
+)
 ```
 
-### **Common props**
+## Props
 
-| Name                  | Required | Type                               | Description                                                                              |
-| --------------------- | -------- | ---------------------------------- | ---------------------------------------------------------------------------------------- |
-| url                   | true     | string                             | Url string to render                                                                     |
-| containerStyle        | false    | object                             | Styles of the main container                                                             |
-| descriptionProps      | false    | object                             | The text prop controls how description text will look like                               |
-| imageProps            | false    | object                             | The image prop controls all properties of the url image component                        |
-| siteNameProps         | false    | object                             | The text prop controls all properties of the site name text component                    |
-| titleProps            | false    | object                             | The text prop controls all properties of the title text component                        |
-| noImageContainerStyle | false    | object                             | The view style prop controls how no image container will look like                       |
-| onError               | false    | (error) => void                    | Callback fired if a response can't be parsed or if there was no URL in the text provided |
-| onLoadEnd             | false    | (response) => void                 | Callback fired when url parsing is finished successfully                                 |
-| renderDescription     | false    | (description?:string) => ReactNode | Callback what receives description string if any and returns description component       |
-| renderImage           | false    | (imageUrl?: string) => ReactNode   | Callback what receives image url if any and returns image component                      |
-| renderLoader          | false    | () => ReactNode                    | Callback what returns loader component                                                   |
-| renderSiteName        | false    | (name?: string) => ReactNode       | Callback what receives site name string if any and returns siteName component            |
-| renderTitle           | false    | (title?: string) => ReactNode      | Callback what receives title string if any and returns title component                   |
-| urlOptions            | false    | object                             | Add request headers to fetch call                                                        |
+### Required
 
-### **Development**
+| Name | Type   | Description                   |
+| ---- | ------ | ----------------------------- |
+| text | string | Text to extract the link from |
 
-Want to contribute? Great!
-Please send Your PR for the package and we will consider it ASAP.
+### Optional
 
-### **Todos**
+| Name                          | Type                                                                                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
+| containerStyle                | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Top level container style                                    |
+| metadataContainerStyle        | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Title, description and minimized image container style       |
+| metadataTextContainerStyle    | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Title and description container style                        |
+| onPreviewDataFetched          | (PreviewData) => void                                                                      | Callback to get the fetched preview data                     |
+| previewData                   | PreviewData                                                                                | Data to render instead of parsing the provided text          |
+| renderDescription             | (string) => ReactNode                                                                      | Custom description render prop                               |
+| renderImage                   | (PreviewDataImage) => ReactNode                                                            | Custom image render prop                                     |
+| renderLinkPreview             | ({ aspectRatio?: number, containerWidth: number, previewData?: PreviewData }) => ReactNode | Custom render prop                                           |
+| renderMinimizedImage          | (PreviewDataImage) => ReactNode                                                            | Custom minimised image render prop                           |
+| renderText                    | (string) => ReactNode                                                                      | Custom provided text render prop                             |
+| renderTitle                   | (string) => ReactNode                                                                      | Custom title render prop                                     |
+| textContainerStyle            | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Text, title, description and minimized image container style |
+| touchableWithoutFeedbackProps | TouchableWithoutFeedbackProps                                                              | Top level touchable props                                    |
 
-- Write MORE Tests
-- Add CI
-- Add Night Mode (\*)
+## License
 
-## **License**
-
-MIT
-
-**Free Software, Hell Yeah!**
+[MIT](LICENSE)
