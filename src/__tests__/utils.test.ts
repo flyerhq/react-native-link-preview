@@ -115,3 +115,17 @@ describe('getImageSize', () => {
     getSizeMock.mockRestore()
   })
 })
+
+describe('oneOf', () => {
+  it('returns a truthy param', () => {
+    expect.assertions(1)
+    const param = utils.oneOf(() => 'truthy', 'falsy')()
+    expect(param).toStrictEqual('truthy')
+  })
+
+  it('returns a falsy param', () => {
+    expect.assertions(1)
+    const param = utils.oneOf(undefined, 'falsy')()
+    expect(param).toStrictEqual('falsy')
+  })
+})

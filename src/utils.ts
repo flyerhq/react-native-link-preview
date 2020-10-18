@@ -165,6 +165,14 @@ export const getPreviewDataImage = async (url?: string) => {
   } catch {}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const oneOf = <T extends (...args: A) => any, U, A extends any[]>(
+  truthy: T | undefined,
+  falsy: U
+) => (...args: Parameters<T>): ReturnType<T> | U => {
+  return truthy ? truthy(...args) : falsy
+}
+
 export const REGEX_IMAGE_CONTENT_TYPE = /image\/*/g
 // Consider empty line after img tag and take only the src field, space before to not match data-src for example
 export const REGEX_IMAGE_TAG = /<img[\n\r]*.*? src=["'](.*?)["']/g
