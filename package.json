@@ -1,12 +1,22 @@
 {
   "name": "@flyerhq/react-native-link-preview",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.2",
+  "description": "Fully customizable preview of the link extracted from the provided text.",
   "homepage": "https://github.com/flyerhq/react-native-link-preview#readme",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "Vitalii Danylov <sincler2013@gmail.com>",
+  "author": "Oleksandr Demchenko <alexdemchenko@yahoo.com>",
   "license": "MIT",
+  "keywords": [
+    "link",
+    "url",
+    "preview",
+    "react-component",
+    "react-native",
+    "ios",
+    "android",
+    "typescript"
+  ],
   "files": [
     "lib"
   ],
