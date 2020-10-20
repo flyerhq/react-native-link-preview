@@ -89,7 +89,11 @@ export const getPreviewData = async (text: string) => {
     const title = REGEX_TITLE.exec(head)
     previewData.title = getHtmlEntitiesDecodedText(title?.[1])
 
-    const meta = [...head.matchAll(REGEX_META)]
+    let matches: RegExpMatchArray | null
+    const meta: RegExpMatchArray[] = []
+    while ((matches = REGEX_META.exec(head)) !== null) {
+      meta.push([...matches])
+    }
 
     const metaPreviewData = meta.reduce<{
       description?: string
@@ -127,7 +131,11 @@ export const getPreviewData = async (text: string) => {
     previewData.title = metaPreviewData.title
 
     if (!previewData.image) {
-      const tags = [...html.matchAll(REGEX_IMAGE_TAG)]
+      let imageMatches: RegExpMatchArray | null
+      const tags: RegExpMatchArray[] = []
+      while ((imageMatches = REGEX_IMAGE_TAG.exec(html)) !== null) {
+        tags.push([...imageMatches])
+      }
 
       let images: PreviewDataImage[] = []
 
