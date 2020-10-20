@@ -89,8 +89,8 @@ export const getPreviewData = async (text: string) => {
     const title = REGEX_TITLE.exec(head)
     previewData.title = getHtmlEntitiesDecodedText(title?.[1])
 
-    let matches
-    const meta = []
+    let matches: RegExpMatchArray | null
+    const meta: RegExpMatchArray[] = []
     while ((matches = REGEX_META.exec(head)) !== null) {
       meta.push([...matches])
     }
@@ -131,8 +131,8 @@ export const getPreviewData = async (text: string) => {
     previewData.title = metaPreviewData.title
 
     if (!previewData.image) {
-      let imageMatches
-      const tags = []
+      let imageMatches: RegExpMatchArray | null
+      const tags: RegExpMatchArray[] = []
       while ((imageMatches = REGEX_IMAGE_TAG.exec(html)) !== null) {
         tags.push([...imageMatches])
       }
