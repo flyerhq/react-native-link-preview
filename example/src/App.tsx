@@ -3,8 +3,8 @@ import React from 'react'
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
 
 const App = () => (
-  <SafeAreaView>
-    <ScrollView contentContainerStyle={styles.container}>
+  <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       <LinkPreview
         containerStyle={styles.previewContainer}
         text='https://github.com/flyerhq'
@@ -13,16 +13,15 @@ const App = () => (
         containerStyle={styles.previewContainer}
         text='https://dev.to/demchenkoalex/making-a-right-keyboard-accessory-view-in-react-native-4n3p'
       />
-      <LinkPreview
-        containerStyle={styles.previewContainer}
-        text='https://medium.com/@alexdemchenko/making-a-right-keyboard-accessory-view-in-react-native-8943682fc6a9'
-      />
     </ScrollView>
   </SafeAreaView>
 )
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  contentContainer: {
     paddingHorizontal: 24,
   },
   previewContainer: {
