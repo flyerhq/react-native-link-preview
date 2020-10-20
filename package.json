@@ -3,16 +3,10 @@
   "version": "1.0.3",
   "description": "Fully customizable preview of the link extracted from the provided text.",
   "homepage": "https://github.com/flyerhq/react-native-link-preview#readme",
-  "main": "lib/index.ts",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Oleksandr Demchenko <alexdemchenko@yahoo.com>",
-  "contributors": [
-    {
-      "name": "Vitalii Danylov",
-      "email": "vitaliidanylov1992@gmail.com",
-      "url": "https://www.linkedin.com/in/vitalii-danylov-2ba158a6/"
-    }
-  ],
+  "contributors": ["Vitalii Danylov <vitaliidanylov1992@gmail.com>"],
   "license": "MIT",
   "keywords": [
     "link",
