@@ -60,15 +60,23 @@ export const LinkPreview = React.memo(
       : undefined
 
     React.useEffect(() => {
+      let isCancelled = false
       if (previewData) return
       const fetchData = async () => {
         setData(undefined)
         const newData = await getPreviewData(text)
-        setData(newData)
-        onPreviewDataFetched?.(newData)
+        // Set data only if component is still mounted
+        /* istanbul ignore next */
+        if (!isCancelled) {
+          setData(newData)
+          onPreviewDataFetched?.(newData)
+        }
       }
 
       fetchData()
+      return () => {
+        isCancelled = true
+      }
     }, [onPreviewDataFetched, previewData, text])
 
     const handleContainerLayout = React.useCallback(
