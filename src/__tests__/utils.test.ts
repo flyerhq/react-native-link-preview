@@ -1,5 +1,6 @@
 import { act } from '@testing-library/react-native'
 import { Image } from 'react-native'
+
 import * as utils from '../utils'
 
 describe('getActualImageUrl', () => {
@@ -97,7 +98,6 @@ describe('getImageSize', () => {
   it('gets image size', () => {
     expect.assertions(2)
     const getSizeMock = jest.spyOn(Image, 'getSize')
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     getSizeMock.mockImplementation(() => {})
     const imageUrl = 'https://avatars2.githubusercontent.com/u/59206044'
     utils.getImageSize(imageUrl)

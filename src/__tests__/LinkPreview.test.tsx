@@ -2,6 +2,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react-native'
 import React from 'react'
 import { Linking } from 'react-native'
 import { ReactTestInstance } from 'react-test-renderer'
+
 import { LinkPreview } from '../LinkPreview'
 import * as utils from '../utils'
 

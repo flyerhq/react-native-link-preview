@@ -1,5 +1,6 @@
-import { AllHtmlEntities } from 'html-entities'
+import { decode } from 'html-entities'
 import { Image } from 'react-native'
+
 import { PreviewData, PreviewDataImage, Size } from './types'
 
 export const getActualImageUrl = (baseUrl: string, imageUrl?: string) => {
@@ -26,7 +27,7 @@ export const getHtmlEntitiesDecodedText = (text?: string) => {
   const actualText = text?.trim()
   if (!actualText) return
 
-  return AllHtmlEntities.decode(actualText)
+  return decode(actualText)
 }
 
 export const getContent = (left: string, right: string, type: string) => {
@@ -173,7 +174,6 @@ export const getPreviewDataImage = async (url?: string) => {
   } catch {}
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const oneOf = <T extends (...args: A) => any, U, A extends any[]>(
   truthy: T | undefined,
   falsy: U

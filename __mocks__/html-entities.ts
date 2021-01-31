@@ -1,3 +1,1 @@
-export const AllHtmlEntities = {
-  decode: jest.fn((text: string) => text),
-}
+export const decode = jest.fn((text: string) => text)

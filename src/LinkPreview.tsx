@@ -11,6 +11,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
+
 import styles from './styles'
 import { PreviewData, PreviewDataImage } from './types'
 import { getPreviewData, oneOf } from './utils'
