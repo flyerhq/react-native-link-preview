@@ -63,7 +63,7 @@ export const getPreviewData = async (text: string) => {
   }
 
   try {
-    const link = text.toLowerCase().match(REGEX_LINK)?.[0]
+    const link = text.match(REGEX_LINK)?.[0]
 
     if (!link) return previewData
 
