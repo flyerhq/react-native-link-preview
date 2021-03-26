@@ -67,7 +67,12 @@ export const getPreviewData = async (text: string) => {
 
     if (!link) return previewData
 
-    const response = await fetch(link)
+    const response = await fetch(link, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+      },
+    })
 
     previewData.link = link
 
