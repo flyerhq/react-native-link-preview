@@ -50,8 +50,7 @@ describe('link preview', () => {
         previewData={{
           image: {
             height: 544,
-            url:
-              'https://miro.medium.com/max/1192/1*B3W_-JWSramkIs4MCCz3NA.png',
+            url: 'https://miro.medium.com/max/1192/1*B3W_-JWSramkIs4MCCz3NA.png',
             width: 1192,
           },
           link,

@@ -179,17 +179,21 @@ export const getPreviewDataImage = async (url?: string) => {
   } catch {}
 }
 
-export const oneOf = <T extends (...args: A) => any, U, A extends any[]>(
-  truthy: T | undefined,
-  falsy: U
-) => (...args: Parameters<T>): ReturnType<T> | U => {
-  return truthy ? truthy(...args) : falsy
-}
+export const oneOf =
+  <T extends (...args: A) => any, U, A extends any[]>(
+    truthy: T | undefined,
+    falsy: U
+  ) =>
+  (...args: Parameters<T>): ReturnType<T> | U => {
+    return truthy ? truthy(...args) : falsy
+  }
 
 export const REGEX_IMAGE_CONTENT_TYPE = /image\/*/g
 // Consider empty line after img tag and take only the src field, space before to not match data-src for example
 export const REGEX_IMAGE_TAG = /<img[\n\r]*.*? src=["'](.*?)["']/g
-export const REGEX_LINK = /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\.(xn--)?[a-z0-9-]{2,20}\b([-a-zA-Z0-9@:%_+[\],.~#?&/=]*[-a-zA-Z0-9@:%_+\]~#?&/=])*/i
+export const REGEX_LINK =
+  /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\.(xn--)?[a-z0-9-]{2,20}\b([-a-zA-Z0-9@:%_+[\],.~#?&/=]*[-a-zA-Z0-9@:%_+\]~#?&/=])*/i
 // Some pages write content before the name/property, some use single quotes instead of double
-export const REGEX_META = /<meta.*?(property|name)=["'](.*?)["'].*?content=["'](.*?)["'].*?>/g
+export const REGEX_META =
+  /<meta.*?(property|name)=["'](.*?)["'].*?content=["'](.*?)["'].*?>/g
 export const REGEX_TITLE = /<title.*?>(.*?)<\/title>/g

@@ -8,7 +8,7 @@
 
 Fully customizable preview of the link extracted from the provided text.
 
-<img src="https://user-images.githubusercontent.com/14123304/96363230-41ceac80-1133-11eb-9a8a-d1360d3aebc6.png" width="320" height="693">
+<img src="https://user-images.githubusercontent.com/14123304/119358981-6bdbe480-bca9-11eb-8c60-96846df8584d.png" width="428" height="926">
 
 ## Getting Started
 

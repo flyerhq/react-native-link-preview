@@ -7,11 +7,11 @@ const App = () => (
     <ScrollView contentContainerStyle={styles.contentContainer}>
       <LinkPreview
         containerStyle={styles.previewContainer}
-        text='https://github.com/flyerhq'
+        text='https://flyer.chat'
       />
       <LinkPreview
         containerStyle={styles.previewContainer}
-        text='https://dev.to/demchenkoalex/making-a-right-keyboard-accessory-view-in-react-native-4n3p'
+        text='https://github.com/flyerhq'
       />
     </ScrollView>
   </SafeAreaView>
