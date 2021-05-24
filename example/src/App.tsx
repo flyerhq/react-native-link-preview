@@ -11,7 +11,7 @@ const App = () => (
       />
       <LinkPreview
         containerStyle={styles.previewContainer}
-        text='https://github.com/flyerhq'
+        text='github.com/flyerhq'
       />
     </ScrollView>
   </SafeAreaView>

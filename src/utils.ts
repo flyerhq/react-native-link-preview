@@ -67,19 +67,25 @@ export const getPreviewData = async (text: string) => {
 
     if (!link) return previewData
 
-    const response = await fetch(link, {
+    let url = link
+
+    if (!url.toLowerCase().startsWith('http')) {
+      url = 'https://' + url
+    }
+
+    const response = await fetch(url, {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
       },
     })
 
-    previewData.link = link
+    previewData.link = url
 
     const contentType = response.headers.get('content-type') ?? ''
 
     if (REGEX_IMAGE_CONTENT_TYPE.test(contentType)) {
-      const image = await getPreviewDataImage(link)
+      const image = await getPreviewDataImage(url)
       previewData.image = image
       return previewData
     }
@@ -125,7 +131,7 @@ export const getPreviewData = async (text: string) => {
           description: description
             ? getHtmlEntitiesDecodedText(description)
             : acc.description,
-          imageUrl: ogImage ? getActualImageUrl(link, ogImage) : acc.imageUrl,
+          imageUrl: ogImage ? getActualImageUrl(url, ogImage) : acc.imageUrl,
           title: ogTitle ? getHtmlEntitiesDecodedText(ogTitle) : acc.title,
         }
       },
@@ -145,8 +151,10 @@ export const getPreviewData = async (text: string) => {
 
       let images: PreviewDataImage[] = []
 
-      for (const tag of tags) {
-        const image = await getPreviewDataImage(getActualImageUrl(link, tag[1]))
+      for (const tag of tags
+        .filter((t) => !t[1].startsWith('data'))
+        .slice(0, 5)) {
+        const image = await getPreviewDataImage(getActualImageUrl(url, tag[1]))
 
         if (!image) continue
 
@@ -192,7 +200,7 @@ export const REGEX_IMAGE_CONTENT_TYPE = /image\/*/g
 // Consider empty line after img tag and take only the src field, space before to not match data-src for example
 export const REGEX_IMAGE_TAG = /<img[\n\r]*.*? src=["'](.*?)["']/g
 export const REGEX_LINK =
-  /(https?:\/\/|www\.)[-a-zA-Z0-9@:%._+~#=]{1,256}\.(xn--)?[a-z0-9-]{2,20}\b([-a-zA-Z0-9@:%_+[\],.~#?&/=]*[-a-zA-Z0-9@:%_+\]~#?&/=])*/i
+  /([\w+]+:\/\/)?([\w\d-]+\.)*[\w-]+[.:]\w+([/?=&#.]?[\w-]+)*\/?/g
 // Some pages write content before the name/property, some use single quotes instead of double
 export const REGEX_META =
   /<meta.*?(property|name)=["'](.*?)["'].*?content=["'](.*?)["'].*?>/g

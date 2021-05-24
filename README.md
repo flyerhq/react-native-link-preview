@@ -6,9 +6,9 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/385762ec7c1e2326fb7f/test_coverage)](https://codeclimate.com/github/flyerhq/react-native-link-preview/test_coverage)
 [![type-coverage](https://img.shields.io/badge/dynamic/json.svg?label=type-coverage&suffix=%&query=$.typeCoverage.is&uri=https%3A%2F%2Fraw.githubusercontent.com%2Fflyerhq%2Freact-native-link-preview%2Fmain%2Fpackage.json)](https://github.com/plantain-00/type-coverage)
 
-Fully customizable preview of the link extracted from the provided text.
+Fully customizable preview of the URL extracted from the provided text.
 
-<img src="https://user-images.githubusercontent.com/14123304/119358981-6bdbe480-bca9-11eb-8c60-96846df8584d.png" width="428" height="926">
+<img src="https://user-images.githubusercontent.com/14123304/119363213-d727b580-bcad-11eb-8678-6e4c4a54621c.png" width="428" height="926">
 
 ## Getting Started
 
