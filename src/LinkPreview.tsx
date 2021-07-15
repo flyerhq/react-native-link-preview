@@ -107,8 +107,9 @@ export const LinkPreview = React.memo(
           style={StyleSheet.flatten([
             styles.image,
             {
-              aspectRatio,
-              maxHeight: containerWidth,
+              height: aspectRatio
+                ? containerWidth / aspectRatio
+                : containerWidth,
               width: containerWidth,
             },
           ])}
