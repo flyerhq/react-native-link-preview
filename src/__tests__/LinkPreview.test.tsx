@@ -60,7 +60,7 @@ describe('link preview', () => {
     )
     await waitFor(() => getByText(link))
     const image = getByRole('image')
-    expect(image.props).toHaveProperty('style.aspectRatio', 1192 / 544)
+    expect(image.props).toHaveProperty('style.height', 0)
   })
 
   it('responses to the layout event change', async () => {

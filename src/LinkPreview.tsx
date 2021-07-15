@@ -107,9 +107,11 @@ export const LinkPreview = React.memo(
           style={StyleSheet.flatten([
             styles.image,
             {
+              // aspectRatio shouldn't really be undefined, just an additional check
               height: aspectRatio
                 ? containerWidth / aspectRatio
-                : containerWidth,
+                : /* istanbul ignore next */
+                  containerWidth,
               width: containerWidth,
             },
           ])}
