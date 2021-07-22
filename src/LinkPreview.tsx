@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {
   Image,
+  LayoutAnimation,
   LayoutChangeEvent,
   Linking,
   StyleProp,
@@ -18,6 +19,7 @@ import { getPreviewData, oneOf } from './utils'
 
 export interface LinkPreviewProps {
   containerStyle?: StyleProp<ViewStyle>
+  enableAnimation?: boolean
   metadataContainerStyle?: StyleProp<ViewStyle>
   metadataTextContainerStyle?: StyleProp<ViewStyle>
   onPreviewDataFetched?: (previewData: PreviewData) => void
@@ -40,6 +42,7 @@ export interface LinkPreviewProps {
 export const LinkPreview = React.memo(
   ({
     containerStyle,
+    enableAnimation,
     metadataContainerStyle,
     metadataTextContainerStyle,
     onPreviewDataFetched,
@@ -69,6 +72,11 @@ export const LinkPreview = React.memo(
         // Set data only if component is still mounted
         /* istanbul ignore next */
         if (!isCancelled) {
+          // No need to cover LayoutAnimation
+          /* istanbul ignore next */
+          if (enableAnimation) {
+            LayoutAnimation.easeInEaseOut()
+          }
           setData(newData)
           onPreviewDataFetched?.(newData)
         }
@@ -78,7 +86,7 @@ export const LinkPreview = React.memo(
       return () => {
         isCancelled = true
       }
-    }, [onPreviewDataFetched, previewData, text])
+    }, [enableAnimation, onPreviewDataFetched, previewData, text])
 
     const handleContainerLayout = React.useCallback(
       (event: LayoutChangeEvent) => {

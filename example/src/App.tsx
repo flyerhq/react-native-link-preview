@@ -1,16 +1,31 @@
 import { LinkPreview } from '@flyerhq/react-native-link-preview'
 import React from 'react'
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  UIManager,
+} from 'react-native'
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true)
+}
 
 const App = () => (
   <SafeAreaView style={styles.container}>
     <ScrollView contentContainerStyle={styles.contentContainer}>
       <LinkPreview
         containerStyle={styles.previewContainer}
+        enableAnimation
         text='https://flyer.chat'
       />
       <LinkPreview
         containerStyle={styles.previewContainer}
+        enableAnimation
         text='github.com/flyerhq'
       />
     </ScrollView>
