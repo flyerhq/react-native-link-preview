@@ -42,11 +42,13 @@ describe('link preview', () => {
     openUrlMock.mockRestore()
   })
 
-  it('renders image node', async () => {
-    expect.assertions(1)
+  it('renders image node and header', async () => {
+    expect.assertions(2)
+    const header = 'header'
     const link = 'https://github.com/flyerhq/'
     const { getByRole, getByText } = render(
       <LinkPreview
+        header={header}
         previewData={{
           image: {
             height: 544,
@@ -61,6 +63,8 @@ describe('link preview', () => {
     await waitFor(() => getByText(link))
     const image = getByRole('image')
     expect(image.props).toHaveProperty('style.height', 0)
+    const headerNode = getByText(header)
+    expect(headerNode).toBeDefined()
   })
 
   it('responses to the layout event change', async () => {

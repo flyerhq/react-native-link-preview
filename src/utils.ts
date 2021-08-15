@@ -200,7 +200,7 @@ export const REGEX_IMAGE_CONTENT_TYPE = /image\/*/g
 // Consider empty line after img tag and take only the src field, space before to not match data-src for example
 export const REGEX_IMAGE_TAG = /<img[\n\r]*.*? src=["'](.*?)["']/g
 export const REGEX_LINK =
-  /([\w+]+:\/\/)?([\w\d-]+\.)*[\w-]+[.:]\w+([/?=&#.]?[\w-]+)*\/?/i
+  /((http|ftp|https):\/\/)?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/i
 // Some pages write content before the name/property, some use single quotes instead of double
 export const REGEX_META =
   /<meta.*?(property|name)=["'](.*?)["'].*?content=["'](.*?)["'].*?>/g

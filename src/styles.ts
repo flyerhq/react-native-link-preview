@@ -4,6 +4,9 @@ export default StyleSheet.create({
   description: {
     marginTop: 4,
   },
+  header: {
+    marginBottom: 6,
+  },
   image: {
     alignSelf: 'center',
     backgroundColor: '#f7f7f8',

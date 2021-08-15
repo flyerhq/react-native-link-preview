@@ -20,11 +20,13 @@ import { getPreviewData, oneOf } from './utils'
 export interface LinkPreviewProps {
   containerStyle?: StyleProp<ViewStyle>
   enableAnimation?: boolean
+  header?: string
   metadataContainerStyle?: StyleProp<ViewStyle>
   metadataTextContainerStyle?: StyleProp<ViewStyle>
   onPreviewDataFetched?: (previewData: PreviewData) => void
   previewData?: PreviewData
   renderDescription?: (description: string) => React.ReactNode
+  renderHeader?: (header: string) => React.ReactNode
   renderImage?: (image: PreviewDataImage) => React.ReactNode
   renderLinkPreview?: (payload: {
     aspectRatio?: number
@@ -43,11 +45,13 @@ export const LinkPreview = React.memo(
   ({
     containerStyle,
     enableAnimation,
+    header,
     metadataContainerStyle,
     metadataTextContainerStyle,
     onPreviewDataFetched,
     previewData,
     renderDescription,
+    renderHeader,
     renderImage,
     renderLinkPreview,
     renderMinimizedImage,
@@ -106,6 +110,17 @@ export const LinkPreview = React.memo(
       )(description)
     }
 
+    const renderHeaderNode = () => {
+      return header
+        ? oneOf(
+            renderHeader,
+            <Text numberOfLines={1} style={styles.header}>
+              {header}
+            </Text>
+          )(header)
+        : null
+    }
+
     const renderImageNode = (image: PreviewDataImage) => {
       return oneOf(
         renderImage,
@@ -137,6 +152,7 @@ export const LinkPreview = React.memo(
               textContainerStyle,
             ])}
           >
+            {renderHeaderNode()}
             {renderTextNode()}
             {/* Render metadata only if there are either description OR title OR
                 there is an image with an aspect ratio of 1 and either description or title
