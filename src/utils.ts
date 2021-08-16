@@ -63,7 +63,11 @@ export const getPreviewData = async (text: string) => {
   }
 
   try {
-    const link = text.match(REGEX_LINK)?.[0]
+    const textWithoutEmails = text.replace(REGEX_EMAIL, '').trim()
+
+    if (!textWithoutEmails) return previewData
+
+    const link = textWithoutEmails.match(REGEX_LINK)?.[0]
 
     if (!link) return previewData
 
@@ -196,6 +200,7 @@ export const oneOf =
     return truthy ? truthy(...args) : falsy
   }
 
+export const REGEX_EMAIL = /([a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g
 export const REGEX_IMAGE_CONTENT_TYPE = /image\/*/g
 // Consider empty line after img tag and take only the src field, space before to not match data-src for example
 export const REGEX_IMAGE_TAG = /<img[\n\r]*.*? src=["'](.*?)["']/g
