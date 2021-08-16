@@ -1,9 +1,9 @@
 {
   "name": "@flyerhq/react-native-link-preview",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Fully customizable preview of the URL extracted from the provided text.",
   "homepage": "https://github.com/flyerhq/react-native-link-preview#readme",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Oleksandr Demchenko <alexdemchenko@yahoo.com>",
   "contributors": [
