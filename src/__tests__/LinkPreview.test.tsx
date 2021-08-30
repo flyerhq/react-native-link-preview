@@ -67,6 +67,27 @@ describe('link preview', () => {
     expect(headerNode).toBeDefined()
   })
 
+  it('renders vertical image node', async () => {
+    expect.assertions(1)
+    const link = 'https://dummyimage.com/300x800/000/fff'
+    const { getByRole, getByText } = render(
+      <LinkPreview
+        previewData={{
+          image: {
+            height: 800,
+            url: link,
+            width: 300,
+          },
+          link,
+        }}
+        text={link}
+      />
+    )
+    await waitFor(() => getByText(link))
+    const image = getByRole('image')
+    expect(image.props).toHaveProperty('style.height', 0)
+  })
+
   it('responses to the layout event change', async () => {
     expect.assertions(1)
     const link = 'https://github.com/flyerhq/'

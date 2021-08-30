@@ -122,6 +122,10 @@ export const LinkPreview = React.memo(
     }
 
     const renderImageNode = (image: PreviewDataImage) => {
+      // aspectRatio shouldn't be undefined, just an additional check
+      /* istanbul ignore next */
+      const ar = aspectRatio ?? 1
+
       return oneOf(
         renderImage,
         <Image
@@ -130,14 +134,14 @@ export const LinkPreview = React.memo(
           source={{ uri: image.url }}
           style={StyleSheet.flatten([
             styles.image,
-            (aspectRatio ?? 1) < 1
+            ar < 1
               ? {
                   height: containerWidth,
                   minWidth: 170,
-                  width: containerWidth * (aspectRatio ?? 1),
+                  width: containerWidth * ar,
                 }
               : {
-                  height: containerWidth / (aspectRatio ?? 1),
+                  height: containerWidth / ar,
                   maxHeight: containerWidth,
                   width: containerWidth,
                 },
