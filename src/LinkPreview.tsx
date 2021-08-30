@@ -126,17 +126,21 @@ export const LinkPreview = React.memo(
         renderImage,
         <Image
           accessibilityRole='image'
+          resizeMode='contain'
           source={{ uri: image.url }}
           style={StyleSheet.flatten([
             styles.image,
-            {
-              // aspectRatio shouldn't really be undefined, just an additional check
-              height: aspectRatio
-                ? containerWidth / aspectRatio
-                : /* istanbul ignore next */
-                  containerWidth,
-              width: containerWidth,
-            },
+            (aspectRatio ?? 1) < 1
+              ? {
+                  height: containerWidth,
+                  minWidth: 170,
+                  width: containerWidth * (aspectRatio ?? 1),
+                }
+              : {
+                  height: containerWidth / (aspectRatio ?? 1),
+                  maxHeight: containerWidth,
+                  width: containerWidth,
+                },
           ])}
         />
       )(image)
