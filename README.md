@@ -39,11 +39,14 @@ return (
 | Name                          | Type                                                                                       | Description                                                  |
 | ----------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
 | containerStyle                | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Top level container style                                    |
+| enableAnimation               | boolean                                                                                    | Enables `LayoutAnimation`                                    |
+| header                        | string                                                                                     | Text above the link                                          |
 | metadataContainerStyle        | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Title, description and minimized image container style       |
 | metadataTextContainerStyle    | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Title and description container style                        |
 | onPreviewDataFetched          | (PreviewData) => void                                                                      | Callback to get the fetched preview data                     |
 | previewData                   | PreviewData                                                                                | Data to render instead of parsing the provided text          |
 | renderDescription             | (string) => ReactNode                                                                      | Custom description render prop                               |
+| renderHeader                  | (string) => ReactNode                                                                      | Custom header render prop                                    |
 | renderImage                   | (PreviewDataImage) => ReactNode                                                            | Custom image render prop                                     |
 | renderLinkPreview             | ({ aspectRatio?: number, containerWidth: number, previewData?: PreviewData }) => ReactNode | Custom render prop                                           |
 | renderMinimizedImage          | (PreviewDataImage) => ReactNode                                                            | Custom minimised image render prop                           |
