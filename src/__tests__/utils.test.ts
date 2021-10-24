@@ -31,9 +31,7 @@ describe('getActualImageUrl', () => {
     const baseUrl = 'https://avatars2.githubusercontent.com/'
     const imageUrl = '/u/59206044'
     const url = utils.getActualImageUrl(baseUrl, imageUrl)
-    expect(url).toStrictEqual(
-      'https://avatars2.githubusercontent.com/u/59206044'
-    )
+    expect(url).toBe('https://avatars2.githubusercontent.com/u/59206044')
   })
 
   it("adds base url if image url doesn't start with a http and adds a slash if needed", () => {
@@ -41,9 +39,7 @@ describe('getActualImageUrl', () => {
     const baseUrl = 'https://avatars2.githubusercontent.com'
     const imageUrl = 'u/59206044'
     const url = utils.getActualImageUrl(baseUrl, imageUrl)
-    expect(url).toStrictEqual(
-      'https://avatars2.githubusercontent.com/u/59206044'
-    )
+    expect(url).toBe('https://avatars2.githubusercontent.com/u/59206044')
   })
 
   it("adds base url if image url doesn't start with a http", () => {
@@ -120,12 +116,12 @@ describe('oneOf', () => {
   it('returns a truthy param', () => {
     expect.assertions(1)
     const param = utils.oneOf(() => 'truthy', 'falsy')()
-    expect(param).toStrictEqual('truthy')
+    expect(param).toBe('truthy')
   })
 
   it('returns a falsy param', () => {
     expect.assertions(1)
     const param = utils.oneOf(undefined, 'falsy')()
-    expect(param).toStrictEqual('falsy')
+    expect(param).toBe('falsy')
   })
 })
