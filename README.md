@@ -54,6 +54,7 @@ return (
 | renderTitle                   | (string) => ReactNode                                                                      | Custom title render prop                                     |
 | textContainerStyle            | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Text, title, description and minimized image container style |
 | touchableWithoutFeedbackProps | TouchableWithoutFeedbackProps                                                              | Top level touchable props                                    |
+requestTimeout | number  | Timeout after which request to get preview data should abort  
 
 ## License
 
