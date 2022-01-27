@@ -54,7 +54,7 @@ export const getImageSize = (url: string) => {
 
 // Functions below use functions from the same file and mocks are not working
 /* istanbul ignore next */
-export const getPreviewData = async (text: string, requestTimeout=5000) => {
+export const getPreviewData = async (text: string, requestTimeout = 5000) => {
   const previewData: PreviewData = {
     description: undefined,
     image: undefined,
@@ -77,23 +77,25 @@ export const getPreviewData = async (text: string, requestTimeout=5000) => {
       url = 'https://' + url
     }
 
-    let abortControllerTimeout: NodeJS.Timeout;
-    const abortController = new AbortController();
+    // eslint-disable-next-line no-undef
+    let abortControllerTimeout: NodeJS.Timeout
+    const abortController = new AbortController()
 
     const request = fetch(url, {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
       },
-      signal:abortController.signal
+      signal: abortController.signal,
     })
 
     abortControllerTimeout = setTimeout(() => {
-      abortController.abort();
-    }, requestTimeout);
-    const response = await request;
+      abortController.abort()
+    }, requestTimeout)
 
-    clearTimeout(abortControllerTimeout);
+    const response = await request
+
+    clearTimeout(abortControllerTimeout)
 
     previewData.link = url
 

@@ -52,9 +52,9 @@ return (
 | renderMinimizedImage          | (PreviewDataImage) => ReactNode                                                            | Custom minimised image render prop                           |
 | renderText                    | (string) => ReactNode                                                                      | Custom provided text render prop                             |
 | renderTitle                   | (string) => ReactNode                                                                      | Custom title render prop                                     |
+| requestTimeout | number  | Timeout after which request to get preview data should abort |
 | textContainerStyle            | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Text, title, description and minimized image container style |
 | touchableWithoutFeedbackProps | TouchableWithoutFeedbackProps                                                              | Top level touchable props                                    |
-| requestTimeout | number  | Timeout after which request to get preview data should abort   |
 
 ## License
 

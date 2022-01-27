@@ -35,10 +35,10 @@ export interface LinkPreviewProps {
   renderMinimizedImage?: (image: PreviewDataImage) => React.ReactNode
   renderText?: (text: string) => React.ReactNode
   renderTitle?: (title: string) => React.ReactNode
+  requestTimeout?: number
   text: string
   textContainerStyle?: StyleProp<ViewStyle>
-  touchableWithoutFeedbackProps?: TouchableWithoutFeedbackProps,
-  requestTimeout?:number
+  touchableWithoutFeedbackProps?: TouchableWithoutFeedbackProps
 }
 
 export const LinkPreview = React.memo(
@@ -57,10 +57,10 @@ export const LinkPreview = React.memo(
     renderMinimizedImage,
     renderText,
     renderTitle,
+    requestTimeout = 5000,
     text,
     textContainerStyle,
     touchableWithoutFeedbackProps,
-    requestTimeout = 5000
   }: LinkPreviewProps) => {
     const [containerWidth, setContainerWidth] = React.useState(0)
     const [data, setData] = React.useState(previewData)
@@ -95,7 +95,13 @@ export const LinkPreview = React.memo(
       return () => {
         isCancelled = true
       }
-    }, [enableAnimation, onPreviewDataFetched, previewData, text])
+    }, [
+      enableAnimation,
+      onPreviewDataFetched,
+      previewData,
+      requestTimeout,
+      text,
+    ])
 
     const handleContainerLayout = React.useCallback(
       (event: LayoutChangeEvent) => {
