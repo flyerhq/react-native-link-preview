@@ -68,7 +68,11 @@ export const LinkPreview = React.memo(
 
     React.useEffect(() => {
       let isCancelled = false
-      if (previewData) return setData(previewData)
+      if (previewData) {
+        setData(previewData)
+        return
+      }
+
       const fetchData = async () => {
         setData(undefined)
         const newData = await getPreviewData(text)
