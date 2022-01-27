@@ -37,7 +37,8 @@ export interface LinkPreviewProps {
   renderTitle?: (title: string) => React.ReactNode
   text: string
   textContainerStyle?: StyleProp<ViewStyle>
-  touchableWithoutFeedbackProps?: TouchableWithoutFeedbackProps
+  touchableWithoutFeedbackProps?: TouchableWithoutFeedbackProps,
+  requestTimeout?:number
 }
 
 export const LinkPreview = React.memo(
@@ -59,6 +60,7 @@ export const LinkPreview = React.memo(
     text,
     textContainerStyle,
     touchableWithoutFeedbackProps,
+    requestTimeout = 5000
   }: LinkPreviewProps) => {
     const [containerWidth, setContainerWidth] = React.useState(0)
     const [data, setData] = React.useState(previewData)
@@ -75,7 +77,7 @@ export const LinkPreview = React.memo(
 
       const fetchData = async () => {
         setData(undefined)
-        const newData = await getPreviewData(text)
+        const newData = await getPreviewData(text, requestTimeout)
         // Set data only if component is still mounted
         /* istanbul ignore next */
         if (!isCancelled) {
