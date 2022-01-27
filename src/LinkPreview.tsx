@@ -13,7 +13,6 @@ import {
   ViewStyle,
 } from 'react-native'
 
-import styles from './styles'
 import { PreviewData, PreviewDataImage } from './types'
 import { getPreviewData, oneOf } from './utils'
 
@@ -240,3 +239,36 @@ export const LinkPreview = React.memo(
     )
   }
 )
+
+const styles = StyleSheet.create({
+  description: {
+    marginTop: 4,
+  },
+  header: {
+    marginBottom: 6,
+  },
+  image: {
+    alignSelf: 'center',
+    backgroundColor: '#f7f7f8',
+  },
+  metadataContainer: {
+    flexDirection: 'row',
+    marginTop: 16,
+  },
+  metadataTextContainer: {
+    flex: 1,
+  },
+  minimizedImage: {
+    borderRadius: 12,
+    height: 48,
+    marginLeft: 4,
+    width: 48,
+  },
+  textContainer: {
+    marginHorizontal: 24,
+    marginVertical: 16,
+  },
+  title: {
+    fontWeight: 'bold',
+  },
+})
