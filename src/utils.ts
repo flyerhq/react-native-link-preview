@@ -83,8 +83,9 @@ export const getPreviewData = async (text: string, requestTimeout = 5000) => {
 
     const request = fetch(url, {
       headers: {
-        'User-Agent':
-          'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+        /* very slow */
+        // 'User-Agent': 'googlebot',
+        'User-Agent': 'facebookexternalhit/1.1',
       },
       signal: abortController.signal,
     })
@@ -112,7 +113,7 @@ export const getPreviewData = async (text: string, requestTimeout = 5000) => {
     // Some pages return undefined
     if (!html) return previewData
 
-    const head = html.substring(0, html.indexOf('<body'))
+    const head = html.substring(0, html.indexOf('body>'))
 
     // Get page title
     const title = REGEX_TITLE.exec(head)
