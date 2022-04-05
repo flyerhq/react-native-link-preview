@@ -113,7 +113,7 @@ export const getPreviewData = async (text: string, requestTimeout = 5000) => {
     // Some pages return undefined
     if (!html) return previewData
 
-    const head = html.substring(0, html.indexOf('body>'))
+    const head = html.substring(0, html.indexOf('</head>'))
 
     // Get page title
     const title = REGEX_TITLE.exec(head)
