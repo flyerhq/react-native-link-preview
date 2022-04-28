@@ -153,12 +153,12 @@ export const getPreviewData = async (text: string, requestTimeout = 5000) => {
           title: ogTitle ? getHtmlEntitiesDecodedText(ogTitle) : acc.title,
         }
       },
-      { title: previewData.title }
+      {}
     )
 
     previewData.description = metaPreviewData.description
     previewData.image = await getPreviewDataImage(metaPreviewData.imageUrl)
-    previewData.title = metaPreviewData.title
+    previewData.title = metaPreviewData.title || previewData.title
 
     if (!previewData.image) {
       let imageMatches: RegExpMatchArray | null
@@ -202,7 +202,7 @@ export const getPreviewDataImage = async (url?: string) => {
       const image: PreviewDataImage = { height, url, width }
       return image
     }
-  } catch {}
+  } catch { }
 }
 
 export const oneOf =
@@ -210,9 +210,9 @@ export const oneOf =
     truthy: T | undefined,
     falsy: U
   ) =>
-  (...args: Parameters<T>): ReturnType<T> | U => {
-    return truthy ? truthy(...args) : falsy
-  }
+    (...args: Parameters<T>): ReturnType<T> | U => {
+      return truthy ? truthy(...args) : falsy
+    }
 
 export const REGEX_EMAIL = /([a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g
 export const REGEX_IMAGE_CONTENT_TYPE = /image\/*/g
