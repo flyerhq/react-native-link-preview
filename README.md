@@ -44,6 +44,7 @@ return (
 | metadataContainerStyle        | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Title, description and minimized image container style       |
 | metadataTextContainerStyle    | [ViewStyle](https://reactnative.dev/docs/view-style-props)                                 | Title and description container style                        |
 | onPreviewDataFetched          | (PreviewData) => void                                                                      | Callback to get the fetched preview data                     |
+| onPress                       | (string) => void                                                                           | Custom handler when click LinkPreview                    |
 | previewData                   | PreviewData                                                                                | Data to render instead of parsing the provided text          |
 | renderDescription             | (string) => ReactNode                                                                      | Custom description render prop                               |
 | renderHeader                  | (string) => ReactNode                                                                      | Custom header render prop                                    |

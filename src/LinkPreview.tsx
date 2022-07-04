@@ -39,6 +39,7 @@ export interface LinkPreviewProps {
   text: string
   textContainerStyle?: StyleProp<ViewStyle>
   touchableWithoutFeedbackProps?: TouchableWithoutFeedbackProps
+  onPress?: (link?: string) => void
 }
 
 export const LinkPreview = React.memo(
@@ -61,6 +62,7 @@ export const LinkPreview = React.memo(
     text,
     textContainerStyle,
     touchableWithoutFeedbackProps,
+    onPress,
   }: LinkPreviewProps) => {
     const [containerWidth, setContainerWidth] = React.useState(0)
     const [data, setData] = React.useState(previewData)
@@ -110,7 +112,13 @@ export const LinkPreview = React.memo(
       []
     )
 
-    const handlePress = () => data?.link && Linking.openURL(data.link)
+    const handlePress = () => {
+      if (typeof onPress === 'function') {
+        onPress(data?.link)
+      } else {
+        data?.link && Linking.openURL(data.link)
+      }
+    }
 
     const renderDescriptionNode = (description: string) => {
       return oneOf(
