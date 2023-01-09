@@ -122,7 +122,7 @@ export const getPreviewData = async (text: string, requestTimeout = 5000) => {
     let matches: RegExpMatchArray | null
     const meta: RegExpMatchArray[] = []
     while ((matches = REGEX_META.exec(head)) !== null) {
-      meta.push([...matches])
+      meta.push([...matches] as RegExpMatchArray)
     }
 
     const metaPreviewData = meta.reduce<{
@@ -164,7 +164,7 @@ export const getPreviewData = async (text: string, requestTimeout = 5000) => {
       let imageMatches: RegExpMatchArray | null
       const tags: RegExpMatchArray[] = []
       while ((imageMatches = REGEX_IMAGE_TAG.exec(html)) !== null) {
-        tags.push([...imageMatches])
+        tags.push([...imageMatches] as RegExpMatchArray)
       }
 
       let images: PreviewDataImage[] = []
