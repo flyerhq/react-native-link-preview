@@ -1,3 +1,7 @@
+<p align="center">
+  ⚠️⚠️ Currently not maintained, please fork or look for alternatives ⚠️⚠️
+</p>
+
 # React Native Link Preview
 
 [![npm](https://img.shields.io/npm/v/@flyerhq/react-native-link-preview)](https://www.npmjs.com/package/@flyerhq/react-native-link-preview)
